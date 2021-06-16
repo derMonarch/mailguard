@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('configuration', '0001_initial'),
+        ("configuration", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='checksmodel',
-            name='time_interval',
+            model_name="checksmodel",
+            name="time_interval",
             field=models.IntegerField(default=0),
         ),
     ]

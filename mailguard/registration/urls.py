@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import account
 
+from .views import account
 
 urlpatterns = [
     # /api/v1/registrations/accounts
