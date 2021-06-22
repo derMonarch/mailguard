@@ -1,19 +1,26 @@
 from .mail_account import MailAccount
 from mailguard.mail.errors import err
-from . import commands
+from .commands import MailBoxConnect, ReadMessages, MailBoxCloseConn
 
 
 class MailControl:
 
-    def __init__(self, account_id):
+    def __init__(self,
+                 account_id,
+                 connect_command=MailBoxConnect,
+                 read_messages_command=ReadMessages,
+                 close_conn_command=MailBoxCloseConn):
         self.account_id = account_id
         self.account = None
         self.mailbox_conn = None
+        self.connect_command = connect_command
+        self.read_messages_command = read_messages_command
+        self.close_conn_command = close_conn_command
 
     def init_control(self):
         try:
             self.account = MailAccount.create(self.account_id)
-            connect = commands.MailBoxConnect(self.account)
+            connect = self.connect_command(self.account)
             connect.execute()
             self.mailbox_conn = connect.get_data()
 
@@ -24,11 +31,12 @@ class MailControl:
         if self.mailbox_conn is None:
             raise err.MailControlException(message="connection to mailbox needs to be established first")
         try:
-            reader = commands.ReadMessages(self.mailbox_conn)
+            reader = self.read_messages_command(self.mailbox_conn)
             reader.execute()
+            return reader.get_data()
         except err.MailBoxConnectionStateException as ex:
             raise err.MailControlException(message=ex.message)
 
     def close_mailbox(self):
-        closer = commands.MailBoxCloseConn(self.mailbox_conn)
+        closer = self.close_conn_command(self.mailbox_conn)
         closer.execute()
