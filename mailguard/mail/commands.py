@@ -43,7 +43,7 @@ class ReadMessages(MailCommand):
 
     def __init__(self, mailbox_conn):
         self.mailbox_conn = mailbox_conn
-        self.messages = []
+        self.messages = {}
 
     def execute(self):
         self.messages.clear()
@@ -53,8 +53,7 @@ class ReadMessages(MailCommand):
             for num in data[0].split():
                 typ, data = self.mailbox_conn.fetch(num, '(RFC822)')
                 if typ in "OK":
-                    # TODO: optimize for large data
-                    self.messages.append({num: data[0][1]})
+                    self.messages[num] = data[0][1]
         else:
             raise err.MailBoxConnectionStateException()
 

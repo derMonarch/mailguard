@@ -67,7 +67,7 @@ class MailControlTest(TestCase):
                                     imap_port=self.imap_port,
                                     smtp_port=self.smtp_port)
 
-        with self.assertRaises(err.MailBoxConnectionStateException):
+        with self.assertRaises(err.MailControlException):
             control = MailControl(self.account_id_two,
                                   connect_command=commands.MailBoxConnect,
                                   read_messages_command=commands.ReadMessages,

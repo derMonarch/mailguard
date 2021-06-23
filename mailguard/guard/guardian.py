@@ -2,8 +2,9 @@ from mailguard.mail.errors.err import MailControlException
 
 
 class Guardian:
-    def __init__(self, mail_control, rule_container=None):
+    def __init__(self, mail_control, task, rule_container=None):
         self.mail_control = mail_control
+        self.task = task
         self.rule_container = rule_container
 
     def guard_mailbox(self):
@@ -12,8 +13,8 @@ class Guardian:
         raise an exception
         """
         try:
-            self.mail_control.init()
+            self.mail_control.init_control()
             messages = self.mail_control.read_messages()
         except MailControlException:
-            # TODO: set state in tasks table, maybe restart job?
-            pass
+            self.task.state = "ERROR"
+            self.task.save()

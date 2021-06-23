@@ -6,7 +6,6 @@ from mailguard.mail.mail_control import MailControl
 class Runner:
 
     def __init__(self, task_controller, scheduler=BackgroundScheduler()):
-        self._task_list = []
         self._guardians = []
         self.task_controller = task_controller
         self.scheduler = scheduler
@@ -32,6 +31,10 @@ class MainRunner(Runner):
     def run(self):
         tasks = self.get_all_tasks()
         for task in tasks:
-            mail_control = MailControl(task.account_id)
-            guardian = Guardian(mail_control)
-            self.add_scheduler_job(guardian, task.time_interval)
+            if task.active == 0:
+                mail_control = MailControl(task.account_id)
+                guardian = Guardian(mail_control, task)
+                self.add_scheduler_job(guardian, task.time_interval)
+
+                task.active = 1
+                task.save()
