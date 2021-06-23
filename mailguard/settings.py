@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,16 +84,16 @@ DATABASES = {
             "user": "root",
             "password": "example",
         },
-        'TEST': {
+        "TEST": {
             # this gets you in-memory sqlite for tests, which is fast
-            'ENGINE': 'django.db.backends.sqlite3',
-        }
+            "ENGINE": "django.db.backends.sqlite3",
+        },
     }
 }
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
-    DATABASES['default']['OPTIONS'] = {}
+if "test" in sys.argv or "test_coverage" in sys.argv:
+    DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
+    DATABASES["default"]["OPTIONS"] = {}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

@@ -7,20 +7,27 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='TaskModel',
+            name="TaskModel",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('account_id', models.CharField(max_length=100)),
-                ('time_interval', models.IntegerField(default=0)),
-                ('priority', models.IntegerField(default=10)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("account_id", models.CharField(max_length=100)),
+                ("time_interval", models.IntegerField(default=0)),
+                ("priority", models.IntegerField(default=10)),
             ],
             options={
-                'db_table': 'tasks',
+                "db_table": "tasks",
             },
         ),
     ]

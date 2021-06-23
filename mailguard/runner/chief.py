@@ -4,7 +4,6 @@ from mailguard.mail.mail_control import MailControl
 
 
 class Runner:
-
     def __init__(self, task_controller, scheduler=BackgroundScheduler()):
         self._guardians = []
         self.task_controller = task_controller
@@ -20,11 +19,11 @@ class Runner:
 
     def add_scheduler_job(self, guardian, seconds):
         self._guardians.append(guardian)
-        self.scheduler.add_job(guardian.guard_mailbox, 'interval', seconds=seconds)
+        # TODO: may need to init connection once and then run scheduled guard on mailbox
+        self.scheduler.add_job(guardian.guard_mailbox, "interval", seconds=seconds)
 
 
 class MainRunner(Runner):
-
     def __init__(self, task_controller):
         super().__init__(task_controller)
 

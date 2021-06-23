@@ -11,4 +11,3 @@ def get_account_data(account_id):
         return account
     except AccountModel.DoesNotExist:
         return None
-

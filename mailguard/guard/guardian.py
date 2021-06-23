@@ -18,3 +18,6 @@ class Guardian:
         except MailControlException:
             self.task.state = "ERROR"
             self.task.save()
+
+            if self.mail_control.mailbox_conn is not None:
+                self.mail_control.close_mailbox()
