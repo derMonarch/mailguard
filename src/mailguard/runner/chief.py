@@ -1,4 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler
+
 from mailguard.guard.guardian import Guardian
 from mailguard.mail.mail_control import MailControl
 

@@ -26,10 +26,7 @@ class MailBoxConnect(MailCommand):
                 host=self.mail_account.imap, port=self.mail_account.imap_port
             )
             mailbox.login(self.mail_account.mail_address, self.mail_account.password)
-            if (
-                self.mail_account.root_mailbox is None
-                or self.mail_account.root_mailbox in "N/A"
-            ):
+            if self.mail_account.root_mailbox is None or self.mail_account.root_mailbox in "N/A":
                 mailbox.select()
             else:
                 mailbox.select(mailbox=self.mail_account.root_mailbox)

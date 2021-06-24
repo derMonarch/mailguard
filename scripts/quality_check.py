@@ -3,21 +3,21 @@ from helper import show_output
 
 
 def run_formatter():
-    process = subprocess.Popen(['black', '../mailguard'],
+    process = subprocess.Popen(['black', '../src/mailguard'],
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
     show_output(process)
 
 
 def run_static_check():
-    process = subprocess.Popen(['flake8', '../mailguard'],
+    process = subprocess.Popen(['flake8', '../src/mailguard'],
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
     show_output(process)
 
 
 def run_import_sort():
-    process = subprocess.Popen(['isort', '../mailguard'],
+    process = subprocess.Popen(['isort', '../src/mailguard'],
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
 
@@ -25,7 +25,7 @@ def run_import_sort():
 
 
 def run_security_check():
-    process = subprocess.Popen(['bandit', '-r', '../mailguard'],
+    process = subprocess.Popen(['bandit', '-r', '../src/mailguard'],
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
 
