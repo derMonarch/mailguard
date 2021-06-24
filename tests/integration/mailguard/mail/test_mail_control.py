@@ -83,3 +83,6 @@ class MailControlTest(TestCase):
         control.init_control()
         messages = control.read_messages()
         assert messages
+
+    def tearDown(self):
+        AccountModel.objects.all().delete()

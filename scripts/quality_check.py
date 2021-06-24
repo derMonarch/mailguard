@@ -1,4 +1,5 @@
 import subprocess
+from helper import show_output
 
 
 def run_formatter():
@@ -31,21 +32,8 @@ def run_security_check():
     show_output(process)
 
 
-def show_output(process):
-    while True:
-        output = process.stdout.readline()
-        print(output.strip())
-        # Do something else
-        return_code = process.poll()
-        if return_code is not None:
-            print('RETURN CODE', return_code)
-            # Process has finished, read rest of the output
-            for output in process.stdout.readlines():
-                print(output.strip())
-            break
-
-
 def main():
+    # TODO: add output checks to raise error when e.g. static checks has warnings
     run_formatter()
     run_static_check()
     run_import_sort()

@@ -64,3 +64,7 @@ class GuardianTest(TestCase):
 
         updated_task = TaskModel.objects.get(account_id=self.account_id_two)
         assert updated_task.state in "ERROR"
+
+    def tearDown(self):
+        AccountModel.objects.all().delete()
+        TaskModel.objects.all().delete()

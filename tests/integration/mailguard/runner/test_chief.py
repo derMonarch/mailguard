@@ -47,3 +47,7 @@ class MainRunnerTest(TestCase):
         updated_task = TaskModel.objects.get(account_id=self.account_id)
         assert updated_task.active == 1
         assert updated_task.state in "OK"
+
+    def tearDown(self):
+        AccountModel.objects.all().delete()
+        TaskModel.objects.all().delete()

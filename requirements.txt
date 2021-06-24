@@ -7,6 +7,7 @@ black==21.6b0
 certifi==2021.5.30
 chardet==4.0.0
 click==8.0.1
+coverage==5.5
 deprecation==2.1.0
 Django==3.2.4
 djangorestframework==3.12.4
@@ -32,6 +33,7 @@ pyflakes==2.3.1
 PyMySQL==1.0.2
 pyparsing==2.4.7
 pytest==6.2.4
+pytest-django==4.4.0
 pytz==2021.1
 PyYAML==5.4.1
 regex==2021.4.4
