@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "mailguard.registration",
     "mailguard.configuration",
     "mailguard.tasks",
+    "mailguard.rules",
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,27 @@
+{
+  "mail": {
+    "date": "",
+    "from": [
+      ""
+    ],
+    "subject": "",
+    "links": [
+      ""
+    ]
+  },
+  "tagging": {
+    "subjects": [
+      "banking"
+    ],
+    "sentiment": [
+      "angry"
+    ],
+    "buzzwords": [
+      "ki",
+      "cloud"
+    ],
+    "summary": [
+      ""
+    ]
+  }
+}

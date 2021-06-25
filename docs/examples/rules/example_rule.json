@@ -1,0 +1,47 @@
+{
+  "ruleId": "1234",
+  "accountId": "1234abcd",
+  "rule": {
+    "filter": {
+      "from": [
+        "abcd",
+        "yes",
+        "no"
+      ],
+      "words": [
+        "yello",
+        "no"
+      ],
+      "links": [
+        "a.com",
+        "b.com"
+      ],
+      "tags": {
+        "categories": [
+          "gaming",
+          "etc"
+        ],
+        "subjects": [
+          ""
+        ],
+        "sentiment": [
+          ""
+        ],
+        "buzzwords": [
+          ""
+        ],
+        "summary": [
+          ""
+        ]
+      }
+    },
+    "delete": false,
+    "moveTo": [
+      "firma"
+    ],
+    "encrypt": true,
+    "message": [
+      "subject_and_body"
+    ]
+  }
+}

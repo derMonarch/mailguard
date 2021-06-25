@@ -19,4 +19,5 @@ urlpatterns = [
     path("api/v1/registrations/", include("mailguard.registration.urls")),
     path("api/v1/configurations/", include("mailguard.configuration.urls")),
     path("api/v1/tasks/", include("mailguard.tasks.urls")),
+    path("api/v1/rules/", include("mailguard.rules.urls")),
 ]

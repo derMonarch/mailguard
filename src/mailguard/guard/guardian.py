@@ -1,3 +1,4 @@
+import mailparser
 from mailguard.mail.errors.err import MailControlException
 
 
@@ -15,7 +16,9 @@ class Guardian:
         try:
             self.mail_control.init_control()
             messages = self.mail_control.read_messages()
-            print("Halleliuja")
+            for key, message in messages.items():
+                mail = mailparser.parse_from_bytes(message)
+                print("WOOOW")
         except MailControlException:
             self.task.state = "ERROR"
             self.task.save()
