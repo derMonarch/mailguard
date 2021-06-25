@@ -15,6 +15,7 @@ class Guardian:
         try:
             self.mail_control.init_control()
             messages = self.mail_control.read_messages()
+            print("Halleliuja")
         except MailControlException:
             self.task.state = "ERROR"
             self.task.save()

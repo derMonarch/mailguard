@@ -7,3 +7,4 @@ class ChecksModel(models.Model):
 
     class Meta:
         db_table = "checks"
+        app_label = 'mailguard.configuration'

@@ -10,3 +10,4 @@ class TaskModel(models.Model):
 
     class Meta:
         db_table = "tasks"
+        app_label = 'mailguard.tasks'
