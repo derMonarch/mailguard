@@ -7,20 +7,24 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='TaskToRuleModel',
+            name="TaskToRuleModel",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('account_id', models.CharField(max_length=100)),
-                ('task_id', models.IntegerField(default=0)),
-                ('rule_id', models.CharField(default='N/A', max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("account_id", models.CharField(max_length=100)),
+                ("task_id", models.IntegerField(default=0)),
+                ("rule_id", models.CharField(default="N/A", max_length=50)),
             ],
             options={
-                'db_table': 'task_rules',
+                "db_table": "task_rules",
             },
         ),
     ]

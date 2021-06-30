@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+
 from mailguard.rules.models.serializers.task_to_rule_serializer import TaskToRuleSerializer
 from mailguard.rules.services import basic
 

@@ -1,4 +1,3 @@
-import ast
 import json
 from rest_framework.test import APITestCase
 
