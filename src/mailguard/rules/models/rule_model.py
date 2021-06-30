@@ -8,4 +8,3 @@ class TaskToRuleModel(models.Model):
 
     class Meta:
         db_table = "task_rules"
-        app_label = 'mailguard.rules'

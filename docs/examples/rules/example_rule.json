@@ -2,8 +2,8 @@
   "ruleId": "1234",
   "accountId": "1234abcd",
   "rule": {
-    "filter": {
-      "from": [
+    "filters": {
+      "fromAddress": [
         "abcd",
         "yes",
         "no"
@@ -41,7 +41,9 @@
     ],
     "encrypt": true,
     "message": [
-      "subject_and_body"
+      "subject",
+      "subject_and_body",
+      "body"
     ]
   }
 }
