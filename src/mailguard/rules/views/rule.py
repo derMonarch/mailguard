@@ -12,7 +12,7 @@ def task_rules_handler(request):
         serializer = TaskToRuleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            response = {'id': serializer.instance.id, **serializer.data}
+            response = {"id": serializer.instance.id, **serializer.data}
 
             return JsonResponse(response, status=status.HTTP_201_CREATED)
 

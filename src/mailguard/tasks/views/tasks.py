@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+
 from mailguard.tasks.models.serializers.task_serializer import TaskSerializer
 
 
@@ -10,7 +11,7 @@ def tasks_handler(request):
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            response = {'id': serializer.instance.id, **serializer.data}
+            response = {"id": serializer.instance.id, **serializer.data}
 
             return JsonResponse(response, status=status.HTTP_201_CREATED)
 

@@ -22,7 +22,6 @@ class RuleViewTest(APITestCase):
         assert response_data['rule']['message'][0] in 'subject'
 
     def test_post_link_task_to_rule(self):
-        """TODO: create task, create rule, connect task and rule"""
         created_task = self.client.post(self.tasks_url, self._new_task(), format='json')
         created_rule = self.client.post(self.rules_url, self._new_rule(), format='json')
         task = get_dict(created_task)
