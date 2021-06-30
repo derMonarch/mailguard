@@ -6,4 +6,4 @@ from ..task_model import TaskModel
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskModel
-        fields = ["account_id", "time_interval", "priority", "active"]
+        fields = ['account_id', 'time_interval', 'priority', 'active', 'state']

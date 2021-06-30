@@ -12,8 +12,9 @@ def task_rules_handler(request):
         serializer = TaskToRuleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            response = {'id': serializer.instance.id, **serializer.data}
 
-            return JsonResponse({"message": "ok"}, status=status.HTTP_201_CREATED)
+            return JsonResponse(response, status=status.HTTP_201_CREATED)
 
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
