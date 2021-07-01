@@ -11,6 +11,7 @@ class RuleViewTest(APITestCase):
         response = self.client.post(self.rules_url, self._new_rule(), format='json')
         response_data = get_dict(response)
 
+        # TODO: refactor to new structure
         assert response.status_code == 201
         assert response_data['ruleId'] is not None
         assert response_data['accountId'] in '3456'

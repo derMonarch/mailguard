@@ -5,18 +5,18 @@ from mailguard.mail.mail_control import MailControl
 
 
 class Runner:
-    def __init__(self, task_controller, scheduler=BackgroundScheduler()):
+    def __init__(self, task_service, scheduler=BackgroundScheduler()):
         self._guardians = []
-        self.task_controller = task_controller
+        self.task_service = task_service
         self.scheduler = scheduler
 
         self.scheduler.start()
 
     def get_all_tasks(self):
-        return self.task_controller.get_all()
+        return self.task_service.get_all()
 
     def remove_task(self, task_id):
-        self.task_controller.remove(task_id)
+        self.task_service.remove(task_id)
 
     def add_scheduler_job(self, guardian, seconds):
         self._guardians.append(guardian)
@@ -27,8 +27,8 @@ class Runner:
 
 
 class MainRunner(Runner):
-    def __init__(self, task_controller):
-        super().__init__(task_controller)
+    def __init__(self, task_service):
+        super().__init__(task_service)
 
     # TODO: besides run also need shutdown
 
