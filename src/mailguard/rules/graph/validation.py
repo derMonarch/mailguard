@@ -1,10 +1,16 @@
-from mailguard.rules.errors.graph import NodeTypeException
+from mailguard.rules.errors.graph import NodeTypeException, EdgeException
 from mailguard.rules.graph.node import Node
+from mailguard.rules.models.rule_container import RuleType
 
 
 def graph_validation(graph_class):
+    """
+        TODO: check for functions not yet validated
+        TODO: on get functions check graph for validity
+    """
     add_node = graph_class.add_node
     add_edge = graph_class.add_edge
+    get_all_edges = graph_class.get_all_edges
 
     def _add_node(self, *args):
         _check_node_instance(args[0])
@@ -12,11 +18,20 @@ def graph_validation(graph_class):
 
     def _add_edge(self, *args):
         _check_node_instance(*args)
+        _check_node_edges(self, *args)
 
         return add_edge(self, *args)
 
+    def _get_all_edges(self, *args):
+
+        return get_all_edges(self, *args)
+
+    def _check_not_yet_validated_functions():
+        pass
+
     graph_class.add_node = _add_node
     graph_class.add_edge = _add_edge
+    graph_class.get_all_edges = _get_all_edges
 
     return graph_class
 
@@ -28,3 +43,52 @@ def _check_node_instance(*args):
     elif len(args) == 2:
         if not isinstance(args[0], Node) or not isinstance(args[1], Node):
             raise NodeTypeException(f'passed nodes needs to be of type Node, got {type(args[0])} and {type(args[1])}')
+
+
+def _check_node_edges(self, *args):
+    first = args[0]
+    second = args[1]
+    if first.value.rule_type is not RuleType.CONDITIONAL:
+        _check_non_conditional(self, first, second)
+    # if first.value.rule_type is RuleType.CONDITIONAL:
+    #     _check_bool_and(self, first, second)
+    #     _check_bool_or(self, first, second)
+
+
+def _check_non_conditional(self, first, second):
+    # if len(self.graph[first]) == 1:
+    #     raise EdgeException('Non conditional node can only have exactly one conditional node as only edge')
+    if second.value.rule_type is not RuleType.CONDITIONAL:
+        raise EdgeException('Non conditional node can only be connected to conditional node')
+    # if second.value.rule_type is RuleType.CONDITIONAL:
+    #     nodes = self.graph[first]
+    #     for node in nodes:
+    #         if node.value.rule_type is RuleType.CONDITIONAL:
+    #             raise EdgeException('Non conditional node can only have exactly one conditional node as edge')
+
+
+def _check_bool_and(self, first, second):
+    if first.value.bool_and:
+        if second.value.rule_type is RuleType.CONDITIONAL:
+            nodes = self.graph[first]
+            for node in nodes:
+                if node.value.rule_type is RuleType.CONDITIONAL:
+                    raise EdgeException('Conditional AND can only have one conditional as edge')
+
+
+def _check_bool_or(self, first, second):
+    if first.value.bool_or:
+        if second.value.rule_type is RuleType.CONDITIONAL:
+            if _check_or_conditionals(self, first) > 1:
+                raise EdgeException('Conditional OR can only have two conditionals as edges')
+
+
+def _check_or_conditionals(self, first):
+    nodes = self.graph[first]
+    conditionals_counter = 0
+
+    for node in nodes:
+        if node.value.rule_type is RuleType.CONDITIONAL:
+            conditionals_counter += 1
+
+    return conditionals_counter

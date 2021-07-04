@@ -3,7 +3,7 @@ import pytest
 from mailguard.rules.graph import graph
 from mailguard.rules.graph.node import Node
 from mailguard.rules.models.rule_container import RuleType, Data
-from mailguard.rules.errors.graph import NodeTypeException
+from mailguard.rules.errors.graph import NodeTypeException, EdgeException
 
 
 def test_rule_graph_nodes_first():
@@ -38,6 +38,15 @@ def test_rule_graph_edge_type_error():
 
     with pytest.raises(NodeTypeException):
         rgraph.add_edge(Node(Data(RuleType.CONDITIONAL)), 'wrong')
+
+
+def test_rule_graph_non_conditional_edge_error():
+    rgraph = graph.RuleGraph()
+
+    with pytest.raises(EdgeException) as ex:
+        rgraph.add_edge(Node(Data(RuleType.TAG)), Node(Data(RuleType.TAG)))
+
+        assert 'Non conditional node can only be connected to conditional node' in str(ex.value)
 
 
 def _add_edge_and_assert(rgraph, node_one, node_two):
