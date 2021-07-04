@@ -1,21 +1,17 @@
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
+from mailguard.rules.graph.validation import graph_validation
 
 
+@graph_validation
 class RuleGraph:
     def __init__(self):
         self.graph = {}
 
     def add_node(self, node):
-        """TODO: check for node type"""
         self.graph[node] = set()
 
     def add_edge(self, first, second):
-        """TODO: check for node type"""
         first.next = second
-        second.next = first
+        second.previous = first
         self._add_if_missing(first)
         self._add_if_missing(second)
 

@@ -1,10 +1,14 @@
+import pytest
+
 from mailguard.rules.graph import graph
+from mailguard.rules.graph.node import Node
 from mailguard.rules.models.rule_container import RuleType, Data
+from mailguard.rules.errors.graph import NodeTypeException, WrongNumberOfArgumentsException
 
 
 def test_rule_graph_nodes_first():
-    node_one = graph.Node(Data(RuleType.TAG, data=[1]))
-    node_two = graph.Node(Data(RuleType.CONDITIONAL))
+    node_one = Node(Data(RuleType.TAG, data=[1]))
+    node_two = Node(Data(RuleType.CONDITIONAL))
 
     rgraph = graph.RuleGraph()
     rgraph.add_node(node_one)
@@ -14,12 +18,26 @@ def test_rule_graph_nodes_first():
 
 
 def test_rule_graph_edges_only():
-    node_one = graph.Node(Data(RuleType.TAG, data=[1]))
-    node_two = graph.Node(Data(RuleType.CONDITIONAL))
+    node_one = Node(Data(RuleType.TAG, data=[1]))
+    node_two = Node(Data(RuleType.CONDITIONAL))
 
     rgraph = graph.RuleGraph()
     
     _add_edge_and_assert(rgraph, node_one, node_two)
+
+
+def test_rule_graph_node_type_error():
+    rgraph = graph.RuleGraph()
+
+    with pytest.raises(NodeTypeException):
+        rgraph.add_node('wrong')
+
+
+def test_rule_graph_edge_type_error():
+    rgraph = graph.RuleGraph()
+
+    with pytest.raises(NodeTypeException):
+        rgraph.add_edge(Node(Data(RuleType.CONDITIONAL)), 'wrong')
 
 
 def _add_edge_and_assert(rgraph, node_one, node_two):
