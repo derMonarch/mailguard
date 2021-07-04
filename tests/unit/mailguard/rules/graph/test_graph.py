@@ -3,7 +3,7 @@ import pytest
 from mailguard.rules.graph import graph
 from mailguard.rules.graph.node import Node
 from mailguard.rules.models.rule_container import RuleType, Data
-from mailguard.rules.errors.graph import NodeTypeException, WrongNumberOfArgumentsException
+from mailguard.rules.errors.graph import NodeTypeException
 
 
 def test_rule_graph_nodes_first():
