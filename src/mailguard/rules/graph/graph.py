@@ -5,9 +5,14 @@ from mailguard.rules.graph.validation import graph_validation
 class RuleGraph:
     """
         TODO: serialization of graph
+        TODO: get operator
+        TODO: validation
     """
-    def __init__(self):
-        self.graph = {}
+    def __init__(self, graph=None):
+        if graph is None:
+            self.graph = {}
+        else:
+            self.graph = graph
 
     def add_node(self, node):
         """validation: checks whether node has correct type, if not raises NodeTypeException"""

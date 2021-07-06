@@ -4,7 +4,7 @@ from django.test import TestCase
 from mailguard.registration.models.account_model import AccountModel
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.runner.chief import MainRunner
-from mailguard.tasks import controller
+from mailguard.tasks.services import tasks
 
 
 class MainRunnerTest(TestCase):
@@ -41,7 +41,7 @@ class MainRunnerTest(TestCase):
 
     # noinspection PyMethodMayBeStatic
     def test_run(self):
-        runner = MainRunner(controller)
+        runner = MainRunner(tasks)
         runner.run()
 
         updated_task = TaskModel.objects.get(account_id=self.account_id)
