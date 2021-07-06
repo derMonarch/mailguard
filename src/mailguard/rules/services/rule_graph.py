@@ -1,6 +1,6 @@
+from mailguard.helper import binary
 from mailguard.rules.models.rule_model import TaskToRuleModel
 from mailguard.rules.repositories import rule_repo
-from mailguard.helper import binary
 
 
 def add_rules_to_task(task):

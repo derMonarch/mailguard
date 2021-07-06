@@ -1,11 +1,11 @@
-from mailguard.rules.errors.graph import NodeTypeException, EdgeException
+from mailguard.rules.errors.graph import EdgeException, NodeTypeException
 from mailguard.rules.graph.node import Node
 from mailguard.rules.models.rule_container import RuleType
 
 
 def graph_validation(graph_class):
     """
-        TODO: check for functions not yet validated
+    TODO: check for functions not yet validated
     """
     add_node = graph_class.add_node
     add_edge = graph_class.add_edge
@@ -38,10 +38,12 @@ def graph_validation(graph_class):
 def _check_node_instance(*args):
     if len(args) == 1:
         if not isinstance(args[0], Node):
-            raise NodeTypeException(f'passed node needs to be of type Node, got {type(args[0])}')
+            raise NodeTypeException(f"passed node needs to be of type Node, got {type(args[0])}")
     elif len(args) == 2:
         if not isinstance(args[0], Node) or not isinstance(args[1], Node):
-            raise NodeTypeException(f'passed nodes needs to be of type Node, got {type(args[0])} and {type(args[1])}')
+            raise NodeTypeException(
+                f"passed nodes needs to be of type Node, got {type(args[0])} and {type(args[1])}"
+            )
 
 
 def _check_node_edges(*args):
@@ -53,5 +55,4 @@ def _check_node_edges(*args):
 
 def _check_non_conditional(second):
     if second.value.rule_type is not RuleType.CONDITIONAL:
-        raise EdgeException('Non conditional node can only be connected to conditional node')
-
+        raise EdgeException("Non conditional node can only be connected to conditional node")

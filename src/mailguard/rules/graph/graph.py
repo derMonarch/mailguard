@@ -4,10 +4,11 @@ from mailguard.rules.graph.validation import graph_validation
 @graph_validation
 class RuleGraph:
     """
-        TODO: serialization of graph
-        TODO: get operator
-        TODO: validation
+    TODO: serialization of graph
+    TODO: get operator
+    TODO: validation
     """
+
     def __init__(self, graph=None):
         if graph is None:
             self.graph = {}

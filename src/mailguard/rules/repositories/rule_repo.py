@@ -23,4 +23,3 @@ def get_all_rules_for_task(task_to_rules):
         pipe.get(task_rule.rule_id)
 
     return pipe.execute()
-
