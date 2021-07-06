@@ -2,14 +2,14 @@ from django.test import TestCase
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.rules.services import basic as rule_service
 from mailguard.rules.models.rule_model import TaskToRuleModel
-from mailguard.rules.services import rule_graph
+from mailguard.rules.services import task
 
 
 class RuleGraphServiceTest(TestCase):
     account_id = "1234"
 
     def test_add_rules_to_task(self):
-        task = TaskModel.objects.create(
+        created_task = TaskModel.objects.create(
             account_id=self.account_id,
             time_interval=5,
             priority=5
@@ -21,17 +21,17 @@ class RuleGraphServiceTest(TestCase):
 
         TaskToRuleModel.objects.create(
             account_id=self.account_id,
-            task_id=task.id,
+            task_id=created_task.id,
             rule_id=rule['ruleId']
         )
 
         TaskToRuleModel.objects.create(
             account_id=self.account_id,
-            task_id=task.id,
+            task_id=created_task.id,
             rule_id=rule_two['ruleId']
         )
 
-        rule_graph.add_rules_to_task(task)
+        task.add_rules_to_task(created_task)
 
-        assert task.rules[0]['something'] in 'data'
-        assert task.rules[1]['something'] in 'another data'
+        assert created_task.rules[0]['something'] in 'data'
+        assert created_task.rules[1]['something'] in 'another data'

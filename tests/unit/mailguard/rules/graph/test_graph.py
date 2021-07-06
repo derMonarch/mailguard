@@ -1,16 +1,14 @@
-import pytest
-
 from mailguard.rules.graph import graph
 from mailguard.rules.graph.node import Node
-from mailguard.rules.models.rule_container import RuleType, Data
-from mailguard.rules.errors.graph import NodeTypeException, EdgeException
+from mailguard.rules.models.rule_container import RuleType, Data, SubRuleType
+from mailguard.helper import serialization
 
 
 def test_rule_graph_nodes_first():
-    node_one = Node(Data(RuleType.TAG, data=[1]))
+    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=[1]))
     node_two = Node(Data(RuleType.CONDITIONAL))
 
-    rgraph = graph.RuleGraph()
+    rgraph = graph.RuleGraph(rule_id='12345')
     rgraph.add_node(node_one)
     rgraph.add_node(node_two)
 
@@ -18,35 +16,34 @@ def test_rule_graph_nodes_first():
 
 
 def test_rule_graph_edges_only():
-    node_one = Node(Data(RuleType.TAG, data=[1]))
+    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=[1]))
     node_two = Node(Data(RuleType.CONDITIONAL))
 
-    rgraph = graph.RuleGraph()
+    rgraph = graph.RuleGraph(rule_id='12345')
     
     _add_edge_and_assert(rgraph, node_one, node_two)
 
 
-def test_rule_graph_node_type_error():
-    rgraph = graph.RuleGraph()
+def test_rule_graph_serialization():
+    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=['gambling']))
+    node_and = Node(Data(RuleType.CONDITIONAL, bool_and=True))
+    node_two = Node(Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['a@b']))
+    node_or = Node(Data(RuleType.CONDITIONAL, bool_or=True))
+    node_and_two = Node(Data(RuleType.CONDITIONAL, bool_and=True))
+    node_three = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=['insurance']))
+    node_four = Node(Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['yes@no']))
 
-    with pytest.raises(NodeTypeException):
-        rgraph.add_node('wrong')
+    rgraph = graph.RuleGraph(rule_id='12345')
 
+    rgraph.add_edge(node_one, node_and)
+    rgraph.add_edge(node_and, node_two)
+    rgraph.add_edge(node_and, node_or)
+    rgraph.add_edge(node_or, node_and_two)
+    rgraph.add_edge(node_and_two, node_three)
+    rgraph.add_edge(node_and_two, node_four)
 
-def test_rule_graph_edge_type_error():
-    rgraph = graph.RuleGraph()
-
-    with pytest.raises(NodeTypeException):
-        rgraph.add_edge(Node(Data(RuleType.CONDITIONAL)), 'wrong')
-
-
-def test_rule_graph_non_conditional_edge_error():
-    rgraph = graph.RuleGraph()
-
-    with pytest.raises(EdgeException) as ex:
-        rgraph.add_edge(Node(Data(RuleType.TAG)), Node(Data(RuleType.TAG)))
-
-        assert 'Non conditional node can only be connected to conditional node' in str(ex.value)
+    serialized = serialization.serialize_object(rgraph)
+    print('YEES')
 
 
 def _add_edge_and_assert(rgraph, node_one, node_two):

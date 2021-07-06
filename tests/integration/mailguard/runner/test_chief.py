@@ -39,7 +39,6 @@ class MainRunnerTest(TestCase):
                                  priority=5,
                                  active=0)
 
-    # noinspection PyMethodMayBeStatic
     def test_run(self):
         runner = MainRunner(tasks)
         runner.run()

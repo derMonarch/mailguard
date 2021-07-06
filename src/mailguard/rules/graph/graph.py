@@ -1,37 +1,25 @@
-from mailguard.rules.graph.validation import graph_validation
+import networkx as nx
 
 
-@graph_validation
 class RuleGraph:
-    """
-    TODO: serialization of graph
-    TODO: get operator
-    TODO: validation
-    """
 
-    def __init__(self, graph=None):
+    def __init__(self, rule_id, graph=None):
         if graph is None:
-            self.graph = {}
+            self.graph = nx.Graph()
         else:
             self.graph = graph
 
+        self.rule_id = rule_id
+
+    def __getitem__(self, key):
+        pass
+
     def add_node(self, node):
-        """validation: checks whether node has correct type, if not raises NodeTypeException"""
-        self.graph[node] = set()
+        pass
 
     def add_edge(self, first, second):
-        self._add_if_missing(first)
-        self._add_if_missing(second)
-
-        self.graph[first].add(second)
-        self.graph[second].add(first)
+        pass
 
     def get_all_edges(self, node):
-        return self.graph[node]
+        pass
 
-    def _add_if_missing(self, node):
-        if not self._check_node_exists(node):
-            self.add_node(node)
-
-    def _check_node_exists(self, node):
-        return node in self.graph

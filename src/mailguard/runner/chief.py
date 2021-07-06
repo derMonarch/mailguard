@@ -2,7 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from mailguard.guard.guardian import Guardian
 from mailguard.mail.mail_control import MailControl
-from mailguard.rules.services import rule_graph
+from mailguard.rules.services import task as task_rules
 
 
 class Runner:
@@ -38,7 +38,7 @@ class MainRunner(Runner):
         for task in tasks:
             if task.active == 0:
                 mail_control = MailControl(task.account_id)
-                rule_graph.add_rules_to_task(task)
+                task_rules.add_rules_to_task(task)
                 guardian = Guardian(mail_control, task)
                 self.add_scheduler_job(guardian, task.time_interval)
 

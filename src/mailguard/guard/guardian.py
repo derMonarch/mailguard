@@ -4,10 +4,9 @@ from mailguard.mail.errors.err import MailControlException
 
 
 class Guardian:
-    def __init__(self, mail_control, task, rule_container=None):
+    def __init__(self, mail_control, task):
         self.mail_control = mail_control
         self.task = task
-        self.rule_container = rule_container
 
     def guard_mailbox(self):
         """
