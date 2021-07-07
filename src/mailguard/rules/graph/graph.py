@@ -1,5 +1,17 @@
 import networkx as nx
 
+from mailguard.helper import id as id_generator
+
+
+def generate_node_id(func):
+    def wrapper(*args):
+        for arg in args:
+            arg.node_id = id_generator.get_uuid_as_str()
+        func(*args)
+        return args
+
+    return wrapper
+
 
 class RuleGraph:
 
@@ -12,14 +24,21 @@ class RuleGraph:
         self.rule_id = rule_id
 
     def __getitem__(self, key):
-        pass
+        return self.graph[key]
 
+    @generate_node_id
     def add_node(self, node):
-        pass
+        self.graph.add_node(node)
 
+    @generate_node_id
     def add_edge(self, first, second):
-        pass
+        self.graph.add_edge(first, second)
 
-    def get_all_edges(self, node):
-        pass
+    def get_all_edges(self):
+        return list(self.graph.edges)
 
+    def remove_node(self, node):
+        self.graph.remove_node(node)
+
+    def remove_edge(self, first, second):
+        self.graph.remove_edge(first, second)

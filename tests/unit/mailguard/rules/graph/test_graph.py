@@ -1,57 +1,37 @@
 from mailguard.rules.graph import graph
-from mailguard.rules.graph.node import Node
-from mailguard.rules.models.rule_container import RuleType, Data, SubRuleType
-from mailguard.helper import serialization
+from mailguard.rules.models.rule_container import RuleType, SubRuleType, Data
 
 
-def test_rule_graph_nodes_first():
-    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=[1]))
-    node_two = Node(Data(RuleType.CONDITIONAL))
+def test_graph_representation():
+    rules = graph.RuleGraph('1234')
 
-    rgraph = graph.RuleGraph(rule_id='12345')
-    rgraph.add_node(node_one)
-    rgraph.add_node(node_two)
+    node_one = Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['a@b'])
+    node_and = Data(RuleType.CONDITIONAL, bool_and=True)
+    node_two = Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=['gambling'])
+    node_or = Data(RuleType.CONDITIONAL, bool_or=True)
+    node_and_two = Data(RuleType.CONDITIONAL, bool_and=True)
+    node_three = Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['b@a'])
+    node_four = Data(RuleType.FILTER, SubRuleType.BUZZWORDS, data=['win'])
 
-    _add_edge_and_assert(rgraph, node_one, node_two)
+    rules.add_edge(node_and, node_one)
+    rules.add_edge(node_and, node_two)
+    rules.add_edge(node_and, node_or)
+    rules.add_edge(node_or, node_and_two)
+    rules.add_edge(node_and_two, node_three)
+    rules.add_edge(node_and_two, node_four)
 
+    edges = rules.get_all_edges()
 
-def test_rule_graph_edges_only():
-    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=[1]))
-    node_two = Node(Data(RuleType.CONDITIONAL))
-
-    rgraph = graph.RuleGraph(rule_id='12345')
-    
-    _add_edge_and_assert(rgraph, node_one, node_two)
-
-
-def test_rule_graph_serialization():
-    node_one = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=['gambling']))
-    node_and = Node(Data(RuleType.CONDITIONAL, bool_and=True))
-    node_two = Node(Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['a@b']))
-    node_or = Node(Data(RuleType.CONDITIONAL, bool_or=True))
-    node_and_two = Node(Data(RuleType.CONDITIONAL, bool_and=True))
-    node_three = Node(Data(RuleType.FILTER, SubRuleType.CATEGORIES, data=['insurance']))
-    node_four = Node(Data(RuleType.FILTER, SubRuleType.FROM_ADDRESS, data=['yes@no']))
-
-    rgraph = graph.RuleGraph(rule_id='12345')
-
-    rgraph.add_edge(node_one, node_and)
-    rgraph.add_edge(node_and, node_two)
-    rgraph.add_edge(node_and, node_or)
-    rgraph.add_edge(node_or, node_and_two)
-    rgraph.add_edge(node_and_two, node_three)
-    rgraph.add_edge(node_and_two, node_four)
-
-    serialized = serialization.serialize_object(rgraph)
-    print('YEES')
-
-
-def _add_edge_and_assert(rgraph, node_one, node_two):
-    rgraph.add_edge(node_one, node_two)
-
-    popped_node = rgraph.graph[node_two].pop()
-
-    assert len(rgraph.graph) == 2
-    assert rgraph.graph[node_one].pop().value.rule_type is RuleType.CONDITIONAL
-    assert popped_node.value.rule_type is RuleType.TAG
-    assert popped_node.value.data[0] == 1
+    assert len(edges) == 6
+    assert edges[0][0].node_id is not None
+    assert edges[0][0].bool_and is True
+    assert edges[0][0].rule_type is RuleType.CONDITIONAL
+    assert edges[0][1].node_id is not None
+    assert edges[0][1].rule_type is RuleType.FILTER
+    assert edges[0][1].sub_rule_type is SubRuleType.FROM_ADDRESS
+    assert edges[1][0].node_id is not None
+    assert edges[1][0].bool_and is True
+    assert edges[1][0].rule_type is RuleType.CONDITIONAL
+    assert edges[1][1].node_id is not None
+    assert edges[1][1].rule_type is RuleType.FILTER
+    assert edges[1][1].sub_rule_type is SubRuleType.CATEGORIES

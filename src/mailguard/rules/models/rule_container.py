@@ -21,6 +21,7 @@ class Data:
     def __init__(self, rule_type, sub_rule_type=None, bool_and=False, bool_or=False, data=None):
         if data is None:
             data = []
+        self.node_id = None
         self.rule_type = rule_type
         self.sub_rule_type = sub_rule_type
         self.bool_and = bool_and
