@@ -1,3 +1,5 @@
+import json
+
 import networkx as nx
 
 from mailguard.helper import id as id_generator
@@ -14,8 +16,7 @@ def generate_node_id(func):
 
 
 class RuleGraph:
-
-    def __init__(self, rule_id, graph=None):
+    def __init__(self, rule_id=None, graph=None):
         if graph is None:
             self.graph = nx.Graph()
         else:

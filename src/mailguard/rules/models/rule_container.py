@@ -1,12 +1,12 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class RuleType(Enum):
+class RuleType(IntEnum):
     FILTER = 1
     CONDITIONAL = 2
 
 
-class SubRuleType(Enum):
+class SubRuleType(IntEnum):
     FROM_ADDRESS = 1
     WORDS = 2
     LINKS = 3

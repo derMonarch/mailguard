@@ -10,7 +10,6 @@ class TasksViewTest(APITestCase):
         response_data = get_dict(response)
 
         assert response.status_code == 201
-        assert response_data['id'] == 1
         assert response_data['account_id'] in '3456'
         assert response_data['time_interval'] == 4
         assert response_data['priority'] == 5

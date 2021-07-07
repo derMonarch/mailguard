@@ -1,6 +1,6 @@
-import json
 import uuid
 
+from mailguard.helper import serialization
 from mailguard.rules.database.redis import redis
 
 
@@ -8,7 +8,7 @@ def save_rule(rule):
     rule_id = uuid.uuid4().__str__()
     rule["ruleId"] = rule_id
 
-    redis.set(rule_id, json.dumps(rule).encode("utf-8"))
+    redis.set(rule_id, serialization.serialize_object(rule))
 
     return rule
 
