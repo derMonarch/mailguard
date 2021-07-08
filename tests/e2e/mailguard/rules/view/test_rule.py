@@ -11,16 +11,22 @@ class RuleViewTest(APITestCase):
         response = self.client.post(self.rules_url, self._new_rule(), format='json')
         response_data = get_dict(response)
 
-        # TODO: refactor to new structure
         assert response.status_code == 201
         assert response_data['ruleId'] is not None
         assert response_data['accountId'] in '3456'
         assert response_data['rule']['filters']['fromAddress'][0] in 'a@b'
+        assert response_data['rule']['filters']['words'][0] in 'winning'
+        assert response_data['rule']['filters']['links'][0] in 'https://google.com'
         assert response_data['rule']['filters']['tags']['categories'][0] in 'gaming'
-        assert response_data['rule']['delete'] is False
-        assert response_data['rule']['moveTo'][0] in 'firma'
-        assert response_data['rule']['encrypt'] is False
-        assert response_data['rule']['message'][0] in 'subject'
+        assert response_data['rule']['filters']['tags']['subjects'][0] in 'lottery'
+        assert response_data['rule']['filters']['tags']['sentiment'][0] in 'happy'
+        assert response_data['rule']['filters']['tags']['buzzwords'][0] in 'money'
+        assert response_data['rule']['filters']['tags']['summary'][0] in 'won the lottery'
+        assert response_data['rule']['actions']['delete'] is False
+        assert response_data['rule']['actions']['copy'] is False
+        assert response_data['rule']['actions']['moveTo'][0] in 'firma'
+        assert response_data['rule']['actions']['encryption']['encrypt'] is True
+        assert response_data['rule']['actions']['encryption']['method'][0] in 'subject_and_body'
 
     def test_post_link_task_to_rule(self):
         created_task = self.client.post(self.tasks_url, self._new_task(), format='json')
@@ -42,19 +48,30 @@ class RuleViewTest(APITestCase):
 
     @staticmethod
     def _new_rule():
-        return {'ruleId': '1234',
+        return {'ruleId': '',
                 'accountId': '3456',
                 'rule': {
                     'filters': {
                         'fromAddress': ["a@b"],
+                        'words': ['winning'],
+                        'links': ['https://google.com'],
                         'tags': {
-                            'categories': ['gaming']
+                            'categories': ['gaming'],
+                            'subjects': ['lottery'],
+                            'sentiment': ['happy'],
+                            'buzzwords': ['money'],
+                            'summary': ['won the lottery']
                         }
                     },
-                    'delete': False,
-                    'moveTo': ["firma"],
-                    'encrypt': False,
-                    'message': ["subject"]
+                    'actions': {
+                        'delete': False,
+                        'copy': False,
+                        'moveTo': ['firma'],
+                        'encryption': {
+                            'encrypt': True,
+                            'method': ['subject_and_body']
+                        }
+                    }
                 }}
 
     @staticmethod

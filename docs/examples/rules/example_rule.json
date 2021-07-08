@@ -3,73 +3,47 @@
   "accountId": "1234abcd",
   "rule": {
     "filters": {
-      "fromAddress": {
-        "and": false,
-        "or": true,
-        "data": [
-          "abcd",
-          "yes",
-          "no"
-        ]
-      },
-      "words": {
-        "and": false,
-        "or": true,
-        "data": [
-          "yello",
-          "no"
-        ]
-      },
-      "links": {
-        "and": false,
-        "or": false,
-        "data": [
-          "a.com",
-          "b.com"
-        ]
-      },
+      "fromAddress": [
+        "abcd",
+        "yes",
+        "no"
+      ],
+      "words": [
+        "yello",
+        "no"
+      ],
+      "links": [
+        "a.com",
+        "b.com"
+      ],
       "tags": {
-        "categories": {
-          "and": true,
-          "or": false,
-          "data": [
-            "gaming",
-            "etc"
-          ]
-        },
-        "subjects": {
-          "and": false,
-          "or": false,
-          "data": [""]
-        },
-        "sentiment": {
-          "and": false,
-          "or": false,
-          "data": [""]
-        },
-        "buzzwords": {
-          "and": false,
-          "or": false,
-          "data": [""]
-        },
-        "summary": {
-          "and": false,
-          "or": false,
-          "data": [""]
-        }
+        "categories": [
+          "gaming",
+          "etc"
+        ],
+        "subjects": [
+          ""
+        ],
+        "sentiment": [
+          ""
+        ],
+        "buzzwords": [
+          ""
+        ],
+        "summary": [
+          ""
+        ]
       }
     },
     "actions": {
       "delete": false,
       "copy": false,
-      "moveTo": {
-        "and": false,
-        "data": ["firma"]
-      },
+      "moveTo": [
+        "firma"
+      ],
       "encryption": {
-        "and": false,
         "encrypt": true,
-        "message": [
+        "method": [
           "subject",
           "subject_and_body",
           "body",

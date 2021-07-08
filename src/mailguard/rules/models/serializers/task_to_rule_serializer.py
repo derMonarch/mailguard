@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mailguard.rules.models.rule_model import TaskToRuleModel
+from mailguard.rules.models.rule_task_model import TaskToRuleModel
 
 
 class TaskToRuleSerializer(serializers.ModelSerializer):

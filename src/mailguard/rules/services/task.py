@@ -1,5 +1,5 @@
 from mailguard.helper import binary
-from mailguard.rules.models.rule_model import TaskToRuleModel
+from mailguard.rules.models.rule_task_model import TaskToRuleModel
 from mailguard.rules.repositories import rule_repo
 
 

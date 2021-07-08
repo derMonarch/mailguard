@@ -21,7 +21,7 @@ def task_rules_handler(request):
 
 @api_view(["POST"])
 def rules_handler(request):
-    # TODO: validate input
+    # TODO: validate input, with custom schema?
     if request.method == "POST":
         created = basic.create_new_rule(request.data)
 

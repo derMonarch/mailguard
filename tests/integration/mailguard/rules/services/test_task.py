@@ -1,7 +1,7 @@
 from django.test import TestCase
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.rules.services import basic as rule_service
-from mailguard.rules.models.rule_model import TaskToRuleModel
+from mailguard.rules.models.rule_task_model import TaskToRuleModel
 from mailguard.rules.services import task
 
 

@@ -56,5 +56,6 @@ stevedore==3.3.0
 toml==0.10.2
 tzlocal==2.1
 urllib3==1.26.5
+vulture==2.3
 websocket-client==1.1.0
 wrapt==1.12.1
