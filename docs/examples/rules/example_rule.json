@@ -1,6 +1,7 @@
 {
   "ruleId": "1234",
   "accountId": "1234abcd",
+  "priority": 1,
   "rule": {
     "filters": {
       "fromAddress": [
@@ -40,6 +41,9 @@
       "copy": false,
       "moveTo": [
         "firma"
+      ],
+      "forward": [
+        "a@b"
       ],
       "encryption": {
         "encrypt": true,

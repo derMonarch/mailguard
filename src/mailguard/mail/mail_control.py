@@ -41,6 +41,18 @@ class MailControl:
         except err.MailBoxConnectionStateException as ex:
             raise err.MailControlException(message=ex.message)
 
+    def delete_message(self):
+        pass
+
+    def move_message(self):
+        pass
+
+    def forward_message(self):
+        pass
+
+    def encrypt_message(self):
+        pass
+
     def close_mailbox(self):
         closer = self.close_conn_command(self.mailbox_conn)
         closer.execute()

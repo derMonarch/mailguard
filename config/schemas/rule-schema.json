@@ -1,0 +1,310 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/object1625774062.json",
+    "title": "Root",
+    "type": "object",
+    "required": [
+        "ruleId",
+        "accountId",
+        "priority",
+        "rule"
+    ],
+    "properties": {
+        "ruleId": {
+            "$id": "#root/ruleId",
+            "title": "Ruleid",
+            "type": "string",
+            "default": "",
+            "examples": [
+                "1234"
+            ],
+            "pattern": "^.*$"
+        },
+        "accountId": {
+            "$id": "#root/accountId",
+            "title": "Accountid",
+            "type": "string",
+            "default": "",
+            "examples": [
+                "1234abcd"
+            ],
+            "pattern": "^.*$"
+        },
+        "priority": {
+            "$id": "#root/priority",
+            "title": "Priority",
+            "type": "integer",
+            "examples": [
+                1
+            ],
+            "default": 0
+        },
+        "rule": {
+            "$id": "#root/rule",
+            "title": "Rule",
+            "type": "object",
+            "required": [
+                "filters",
+                "actions"
+            ],
+            "properties": {
+                "filters": {
+                    "$id": "#root/rule/filters",
+                    "title": "Filters",
+                    "type": "object",
+                    "required": [
+                        "fromAddress",
+                        "words",
+                        "links",
+                        "tags"
+                    ],
+                    "properties": {
+                        "fromAddress": {
+                            "$id": "#root/rule/filters/fromAddress",
+                            "title": "Fromaddress",
+                            "type": "array",
+                            "default": [],
+                            "items": {
+                                "$id": "#root/rule/filters/fromAddress/items",
+                                "title": "Items",
+                                "type": "string",
+                                "default": "",
+                                "examples": [
+                                    "abcd"
+                                ],
+                                "pattern": "^.*$"
+                            }
+                        },
+                        "words": {
+                            "$id": "#root/rule/filters/words",
+                            "title": "Words",
+                            "type": "array",
+                            "default": [],
+                            "items": {
+                                "$id": "#root/rule/filters/words/items",
+                                "title": "Items",
+                                "type": "string",
+                                "default": "",
+                                "examples": [
+                                    "yello"
+                                ],
+                                "pattern": "^.*$"
+                            }
+                        },
+                        "links": {
+                            "$id": "#root/rule/filters/links",
+                            "title": "Links",
+                            "type": "array",
+                            "default": [],
+                            "items": {
+                                "$id": "#root/rule/filters/links/items",
+                                "title": "Items",
+                                "type": "string",
+                                "default": "",
+                                "examples": [
+                                    "a.com"
+                                ],
+                                "pattern": "^.*$"
+                            }
+                        },
+                        "tags": {
+                            "$id": "#root/rule/filters/tags",
+                            "title": "Tags",
+                            "type": "object",
+                            "required": [
+                                "categories",
+                                "subjects",
+                                "sentiment",
+                                "buzzwords",
+                                "summary"
+                            ],
+                            "properties": {
+                                "categories": {
+                                    "$id": "#root/rule/filters/tags/categories",
+                                    "title": "Categories",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/filters/tags/categories/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            "gaming"
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                },
+                                "subjects": {
+                                    "$id": "#root/rule/filters/tags/subjects",
+                                    "title": "Subjects",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/filters/tags/subjects/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            ""
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                },
+                                "sentiment": {
+                                    "$id": "#root/rule/filters/tags/sentiment",
+                                    "title": "Sentiment",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/filters/tags/sentiment/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            ""
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                },
+                                "buzzwords": {
+                                    "$id": "#root/rule/filters/tags/buzzwords",
+                                    "title": "Buzzwords",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/filters/tags/buzzwords/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            ""
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                },
+                                "summary": {
+                                    "$id": "#root/rule/filters/tags/summary",
+                                    "title": "Summary",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/filters/tags/summary/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            ""
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "actions": {
+                    "$id": "#root/rule/actions",
+                    "title": "Actions",
+                    "type": "object",
+                    "required": [
+                        "delete",
+                        "copy",
+                        "moveTo",
+                        "forward",
+                        "encryption"
+                    ],
+                    "properties": {
+                        "delete": {
+                            "$id": "#root/rule/actions/delete",
+                            "title": "Delete",
+                            "type": "boolean",
+                            "examples": [
+                                false
+                            ],
+                            "default": true
+                        },
+                        "copy": {
+                            "$id": "#root/rule/actions/copy",
+                            "title": "Copy",
+                            "type": "boolean",
+                            "examples": [
+                                false
+                            ],
+                            "default": true
+                        },
+                        "moveTo": {
+                            "$id": "#root/rule/actions/moveTo",
+                            "title": "Moveto",
+                            "type": "array",
+                            "default": [],
+                            "items": {
+                                "$id": "#root/rule/actions/moveTo/items",
+                                "title": "Items",
+                                "type": "string",
+                                "default": "",
+                                "examples": [
+                                    "firma"
+                                ],
+                                "pattern": "^.*$"
+                            }
+                        },
+                        "forward": {
+                            "$id": "#root/rule/actions/forward",
+                            "title": "Forward",
+                            "type": "array",
+                            "default": [],
+                            "items": {
+                                "$id": "#root/rule/actions/forward/items",
+                                "title": "Items",
+                                "type": "string",
+                                "default": "",
+                                "examples": [
+                                    "a@b"
+                                ],
+                                "pattern": "^.*$"
+                            }
+                        },
+                        "encryption": {
+                            "$id": "#root/rule/actions/encryption",
+                            "title": "Encryption",
+                            "type": "object",
+                            "required": [
+                                "encrypt",
+                                "method"
+                            ],
+                            "properties": {
+                                "encrypt": {
+                                    "$id": "#root/rule/actions/encryption/encrypt",
+                                    "title": "Encrypt",
+                                    "type": "boolean",
+                                    "examples": [
+                                        true
+                                    ],
+                                    "default": true
+                                },
+                                "method": {
+                                    "$id": "#root/rule/actions/encryption/method",
+                                    "title": "Method",
+                                    "type": "array",
+                                    "default": [],
+                                    "items": {
+                                        "$id": "#root/rule/actions/encryption/method/items",
+                                        "title": "Items",
+                                        "type": "string",
+                                        "default": "",
+                                        "examples": [
+                                            "subject"
+                                        ],
+                                        "pattern": "^.*$"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

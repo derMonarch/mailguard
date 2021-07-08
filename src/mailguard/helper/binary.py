@@ -6,5 +6,6 @@ def decode_binary_to_dict(data):
     return json.loads(decoded_str)
 
 
-def decode_binary_dict_list(items):
-    return [decode_binary_to_dict(item) for item in items]
+def decode_binary_dict_rule_list(items):
+    rules_list = [decode_binary_to_dict(item) for item in items]
+    return sorted(rules_list, key=lambda rule: rule["priority"])
