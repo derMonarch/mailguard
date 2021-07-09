@@ -1,7 +1,5 @@
 from django.test import TestCase
 from mailguard.tasks.models.task_model import TaskModel
-from mailguard.rules.services import basic as rule_service
-from mailguard.rules.models.rule_task_model import TaskToRuleModel
 from mailguard.rules.services import task
 from tests.helper import rules
 
@@ -16,27 +14,7 @@ class RuleGraphServiceTest(TestCase):
             priority=5
         )
 
-        rule = rule_service.create_new_rule(rules.new_rule(priority=1))
-        rule_two = rule_service.create_new_rule(rules.new_rule(priority=3))
-        rule_three = rule_service.create_new_rule(rules.new_rule(priority=5))
-
-        TaskToRuleModel.objects.create(
-            account_id=self.account_id,
-            task_id=created_task.id,
-            rule_id=rule['ruleId']
-        )
-
-        TaskToRuleModel.objects.create(
-            account_id=self.account_id,
-            task_id=created_task.id,
-            rule_id=rule_two['ruleId']
-        )
-
-        TaskToRuleModel.objects.create(
-            account_id=self.account_id,
-            task_id=created_task.id,
-            rule_id=rule_three['ruleId']
-        )
+        rules.add_rules_to_task_db(self.account_id, created_task)
 
         task.add_rules_to_task(created_task)
 

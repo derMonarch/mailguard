@@ -1,12 +1,14 @@
 import mailparser
 
 from mailguard.mail.errors.err import MailControlException
+from mailguard.guard.rules import interpreter
 
 
 class Guardian:
     def __init__(self, mail_control, task):
         self.mail_control = mail_control
         self.task = task
+        self.rule_interpreter = interpreter.RuleInterpreter(self.mail_control, self.task)
 
     def guard_mailbox(self):
         """
@@ -18,7 +20,7 @@ class Guardian:
             messages = self.mail_control.read_messages()
             for key, message in messages.items():
                 mail = mailparser.parse_from_bytes(message)
-                print("WOOOW")
+                self.rule_interpreter.interpret(mail)
         except MailControlException:
             self.task.state = "ERROR"
             self.task.save()

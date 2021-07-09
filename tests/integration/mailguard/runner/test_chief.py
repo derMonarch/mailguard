@@ -6,6 +6,8 @@ from mailguard.tasks.models.task_model import TaskModel
 from mailguard.runner.chief import MainRunner
 from mailguard.tasks.services import tasks
 
+from tests.helper import rules
+
 
 class MainRunnerTest(TestCase):
     config = configparser.ConfigParser()
@@ -34,10 +36,11 @@ class MainRunnerTest(TestCase):
                                     imap_port=self.imap_port,
                                     smtp_port=self.smtp_port)
 
-        TaskModel.objects.create(account_id=self.account_id,
-                                 time_interval=5,
-                                 priority=5,
-                                 active=0)
+        created_task = TaskModel.objects.create(account_id=self.account_id,
+                                                time_interval=5,
+                                                priority=5)
+
+        rules.add_rules_to_task_db(self.account_id, created_task)
 
     def test_run(self):
         runner = MainRunner(tasks)

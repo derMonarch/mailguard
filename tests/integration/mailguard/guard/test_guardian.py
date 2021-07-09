@@ -6,6 +6,9 @@ from mailguard.registration.models.account_model import AccountModel
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.mail.mail_control import MailControl
 from mailguard.guard.guardian import Guardian
+from mailguard.rules.services import task as task_rule
+
+from tests.helper import rules
 
 
 class GuardianTest(TestCase):
@@ -47,6 +50,9 @@ class GuardianTest(TestCase):
                                         time_interval=5,
                                         priority=5,
                                         active=0)
+
+        rules.add_rules_to_task_db(self.account_id, task)
+        task_rule.add_rules_to_task(task)
 
         mail_control = MailControl(self.account_id)
         guardian = Guardian(mail_control, task)

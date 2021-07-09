@@ -6,7 +6,7 @@ from .errors import err
 
 class MailCommand(ABC):
     @abstractmethod
-    def execute(self):
+    def execute(self, *args, **kwargs):
         pass
 
     @abstractmethod
@@ -19,7 +19,7 @@ class MailBoxConnect(MailCommand):
         self.mail_account = mail_account
         self.connection = None
 
-    def execute(self):
+    def execute(self, *args, **kwargs):
         # noinspection PyBroadException
         try:
             mailbox = imaplib.IMAP4_SSL(
@@ -45,7 +45,7 @@ class ReadMessages(MailCommand):
         self.mailbox_conn = mailbox_conn
         self.messages = {}
 
-    def execute(self):
+    def execute(self, *args, **kwargs):
         self.messages.clear()
         if self._check_connection_state():
             # TODO: what can I search?
@@ -69,7 +69,7 @@ class MailBoxCloseConn(MailCommand):
     def __init__(self, mailbox_conn):
         self.mailbox_conn = mailbox_conn
 
-    def execute(self):
+    def execute(self, *args, **kwargs):
         self.mailbox_conn.close()
         self.mailbox_conn.logout()
 

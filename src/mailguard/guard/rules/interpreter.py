@@ -1,16 +1,28 @@
 class RuleInterpreter:
     """
-    1. check filter in rules (rules sorted by priority)
-    2. execute action in rule which applies first
-    TODO: tags filter not yet implemented
+    TODO: tags filter and encryption not yet implemented
     """
 
     def __init__(self, mail_control, task):
         self.mail_control = mail_control
         self.task = task
 
-    def execute(self, message):
-        pass
+    def interpret(self, mail):
+        for rule in self.task.rules:
+            print('yeeelo')
 
-    def _get_action_by_filter(self, message):
-        pass
+    def _execute_action(self, rule):
+        actions = rule['rule']['actions']
+        for key in actions.keys():
+            if key in 'delete':
+                pass
+            elif key in 'copy':
+                pass
+            elif key in 'moveTo':
+                pass
+            elif key in 'forward':
+                pass
+            elif key in 'encryption':
+                pass
+            else:
+                pass

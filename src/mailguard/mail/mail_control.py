@@ -19,40 +19,40 @@ class MailControl:
         self.read_messages_command = read_messages_command
         self.close_conn_command = close_conn_command
 
-    def init_control(self):
+    def init_control(self, *args, **kwargs):
         try:
             self.account = MailAccount.create(self.account_id)
             connect = self.connect_command(self.account)
-            connect.execute()
+            connect.execute(*args, **kwargs)
             self.mailbox_conn = connect.get_data()
 
         except (err.CouldNotGetAccountException, err.MailBoxConnectionException) as ex:
             raise err.MailControlException(message=ex.message)
 
-    def read_messages(self):
+    def read_messages(self, *args, **kwargs):
         if self.mailbox_conn is None:
             raise err.MailControlException(
                 message="connection to mailbox needs to be established first"
             )
         try:
             reader = self.read_messages_command(self.mailbox_conn)
-            reader.execute()
+            reader.execute(*args, **kwargs)
             return reader.get_data()
         except err.MailBoxConnectionStateException as ex:
             raise err.MailControlException(message=ex.message)
 
-    def delete_message(self):
+    def delete_message(self, *args, **kwargs):
         pass
 
-    def move_message(self):
+    def move_message(self, *args, **kwargs):
         pass
 
-    def forward_message(self):
+    def forward_message(self, *args, **kwargs):
         pass
 
-    def encrypt_message(self):
+    def encrypt_message(self, *args, **kwargs):
         pass
 
-    def close_mailbox(self):
+    def close_mailbox(self, *args, **kwargs):
         closer = self.close_conn_command(self.mailbox_conn)
-        closer.execute()
+        closer.execute(*args, **kwargs)
