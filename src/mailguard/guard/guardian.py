@@ -2,13 +2,14 @@ import mailparser
 
 from mailguard.mail.errors.err import MailControlException
 from mailguard.guard.rules import interpreter
+from mailguard.guard.rules.filter import BaseFilterCheck
 
 
 class Guardian:
     def __init__(self, mail_control, task):
         self.mail_control = mail_control
         self.task = task
-        self.rule_interpreter = interpreter.RuleInterpreter(self.mail_control, self.task)
+        self.rule_interpreter = interpreter.RuleInterpreter(self.mail_control, self.task, BaseFilterCheck())
 
     def guard_mailbox(self):
         """

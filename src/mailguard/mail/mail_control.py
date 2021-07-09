@@ -1,7 +1,7 @@
 from mailguard.mail.errors import err
 
-from .commands import MailBoxCloseConn, MailBoxConnect, ReadMessages
-from .mail_account import MailAccount
+from mailguard.mail.commands import MailBoxCloseConn, MailBoxConnect, ReadMessages
+from mailguard.mail.mail_account import MailAccount
 
 
 class MailControl:
@@ -30,10 +30,7 @@ class MailControl:
             raise err.MailControlException(message=ex.message)
 
     def read_messages(self, *args, **kwargs):
-        if self.mailbox_conn is None:
-            raise err.MailControlException(
-                message="connection to mailbox needs to be established first"
-            )
+        self._check_connection()
         try:
             reader = self.read_messages_command(self.mailbox_conn)
             reader.execute(*args, **kwargs)
@@ -42,7 +39,9 @@ class MailControl:
             raise err.MailControlException(message=ex.message)
 
     def delete_message(self, *args, **kwargs):
-        pass
+        self._check_connection()
+        mail = kwargs['mail']
+        print('yeeelo')
 
     def move_message(self, *args, **kwargs):
         pass
@@ -56,3 +55,9 @@ class MailControl:
     def close_mailbox(self, *args, **kwargs):
         closer = self.close_conn_command(self.mailbox_conn)
         closer.execute(*args, **kwargs)
+
+    def _check_connection(self):
+        if self.mailbox_conn is None:
+            raise err.MailControlException(
+                message="connection to mailbox needs to be established first"
+            )

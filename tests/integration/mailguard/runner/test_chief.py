@@ -24,7 +24,7 @@ class MainRunnerTest(TestCase):
     imap_port = 993
     smtp_port = 587
 
-    # TODO: tests need to check for specific logic (mail deleted, mail moved, etc...)
+    # TODO: tests need to check if rules have been added to task, and task is in right state
 
     def setUp(self):
         AccountModel.objects.create(account_id=self.account_id,
