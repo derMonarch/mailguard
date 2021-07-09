@@ -53,12 +53,7 @@
                     "$id": "#root/rule/filters",
                     "title": "Filters",
                     "type": "object",
-                    "required": [
-                        "fromAddress",
-                        "words",
-                        "links",
-                        "tags"
-                    ],
+                    "required": [],
                     "properties": {
                         "fromAddress": {
                             "$id": "#root/rule/filters/fromAddress",
@@ -112,13 +107,7 @@
                             "$id": "#root/rule/filters/tags",
                             "title": "Tags",
                             "type": "object",
-                            "required": [
-                                "categories",
-                                "subjects",
-                                "sentiment",
-                                "buzzwords",
-                                "summary"
-                            ],
+                            "required": [],
                             "properties": {
                                 "categories": {
                                     "$id": "#root/rule/filters/tags/categories",
@@ -208,13 +197,7 @@
                     "$id": "#root/rule/actions",
                     "title": "Actions",
                     "type": "object",
-                    "required": [
-                        "delete",
-                        "copy",
-                        "moveTo",
-                        "forward",
-                        "encryption"
-                    ],
+                    "required": [],
                     "properties": {
                         "delete": {
                             "$id": "#root/rule/actions/delete",

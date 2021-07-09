@@ -26,3 +26,21 @@ def new_rule(priority=5):
                     }
                 }
             }}
+
+
+def invalid_rule():
+    return {'ruleId': '',
+            'accountId': '3456',
+            'rule': {
+                'filters': {
+                    'fromAddress': ["a@b"],
+                    'words': ['winning'],
+                    'links': ['https://google.com']
+                },
+                'actions': {
+                    'delete': False,
+                    'copy': False,
+                    'moveTo': ['firma'],
+                    'forward': ['a@b']
+                }
+            }}

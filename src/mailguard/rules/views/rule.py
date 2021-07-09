@@ -1,9 +1,15 @@
+import os
+
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 
 from mailguard.rules.models.serializers.task_to_rule_serializer import TaskToRuleSerializer
 from mailguard.rules.services import basic
+from mailguard.rules.validators.rule_schema import RuleSchemaValidator
+
+rule_schema = os.path.abspath(__file__ + '/../../../../../config/schemas/rule-schema.json')
+rule_validator = RuleSchemaValidator(rule_schema)
 
 
 @api_view(["POST"])
@@ -21,8 +27,10 @@ def task_rules_handler(request):
 
 @api_view(["POST"])
 def rules_handler(request):
-    # TODO: validate input, with custom schema?
     if request.method == "POST":
-        created = basic.create_new_rule(request.data)
+        validated = rule_validator.validate(request.data)
+        if validated['status'] in 'error':
+            return JsonResponse(validated, status=status.HTTP_400_BAD_REQUEST)
 
+        created = basic.create_new_rule(request.data)
         return JsonResponse(created, status=status.HTTP_201_CREATED)

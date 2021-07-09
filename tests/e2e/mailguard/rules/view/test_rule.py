@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from tests.helper.decoding import get_dict
-from tests.helper.rules import new_rule
+from tests.helper.rules import new_rule, invalid_rule
 
 
 class RuleViewTest(APITestCase):
@@ -30,6 +30,13 @@ class RuleViewTest(APITestCase):
         assert response_data['rule']['actions']['moveTo'][0] in 'firma'
         assert response_data['rule']['actions']['encryption']['encrypt'] is True
         assert response_data['rule']['actions']['encryption']['method'][0] in 'subject_and_body'
+
+    def test_post_new_rule_invalid(self):
+        response = self.client.post(self.rules_url, invalid_rule(), format='json')
+        response_data = get_dict(response)
+
+        assert response_data['status'] in 'error'
+        assert response_data['message'] is not None
 
     def test_post_link_task_to_rule(self):
         created_task = self.client.post(self.tasks_url, self._new_task(), format='json')

@@ -1,6 +1,6 @@
 import json
 
-from jsonschema import validate
+from jsonschema import validate, ValidationError
 
 
 class RuleSchemaValidator:
@@ -11,8 +11,11 @@ class RuleSchemaValidator:
     def validate(self, data):
         if self.schema is None:
             self._load_schema()
-
-        validate(instance=data, schema=self.schema)
+        try:
+            validate(instance=data, schema=self.schema)
+            return {'status': 'ok', 'message': 'validation successful'}
+        except ValidationError as ex:
+            return {'status': 'error', 'message': str(ex)}
 
     def _load_schema(self):
         with open(self.schema_path) as json_file:
