@@ -10,12 +10,12 @@ class RuleInterpreter:
 
     def interpret(self, mail):
         for rule in self.task.rules:
-            print('yeeelo')
+            self._check_filter(rule, mail)
 
     def _check_filter(self, rule, mail):
         filters = rule['rule']['filters']
         for key in filters.keys():
-            if self.filter_check.check_filter(key, mail):
+            if self.filter_check.check_filter(key, filters[key], mail):
                 self._execute_action(rule, mail)
 
     def _execute_action(self, rule, mail):

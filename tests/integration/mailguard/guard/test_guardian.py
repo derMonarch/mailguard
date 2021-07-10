@@ -54,9 +54,34 @@ class GuardianTest(TestCase):
         rules.add_rules_to_task_db(self.account_id, task)
         task_rule.add_rules_to_task(task)
 
-        mail_control = MailControl(self.account_id)
-        guardian = Guardian(mail_control, task)
-        guardian.guard_mailbox()
+        self._guard_mailbox(task)
+
+    def test_guard_mailbox_delete_message(self):
+        test_rule = {'ruleId': '1234',
+                     'accountId': self.account_id,
+                     'priority': 2,
+                     'rule': {
+                         'filters': {
+                             'fromAddress': [
+                                 'spam@yahoo.de',
+                                 'mailings@produkt.gmx.net'
+                             ]
+                         },
+                         'actions': {
+                             'delete': True
+                         }
+                     }}
+
+        task = TaskModel.objects.create(account_id=self.account_id,
+                                        time_interval=5,
+                                        priority=5,
+                                        active=0)
+
+        rules.add_rules_to_task_db(self.account_id, task)
+        rules.add_rule_to_task_db(self.account_id, task, test_rule)
+        task_rule.add_rules_to_task(task)
+
+        self._guard_mailbox(task)
 
     def test_guard_mailbox_negative(self):
         task = TaskModel.objects.create(account_id=self.account_id_two,
@@ -70,6 +95,11 @@ class GuardianTest(TestCase):
 
         updated_task = TaskModel.objects.get(account_id=self.account_id_two)
         assert updated_task.state in "ERROR"
+
+    def _guard_mailbox(self, task):
+        mail_control = MailControl(self.account_id)
+        guardian = Guardian(mail_control, task)
+        guardian.guard_mailbox()
 
     def tearDown(self):
         AccountModel.objects.all().delete()

@@ -65,6 +65,19 @@ class ReadMessages(MailCommand):
             return True
 
 
+class DeleteMessage(MailCommand):
+
+    def __init__(self, mailbox_conn):
+        self.mailbox_conn = mailbox_conn
+
+    def execute(self, *args, **kwargs):
+        self.mailbox_conn.store(kwargs['mail'].num, "+FLAGS", "\\Deleted")
+        self.mailbox_conn.expunge()
+
+    def get_data(self):
+        pass
+
+
 class MailBoxCloseConn(MailCommand):
     def __init__(self, mailbox_conn):
         self.mailbox_conn = mailbox_conn

@@ -86,3 +86,12 @@ def add_rules_to_task_db(account_id, created_task):
         task_id=created_task.id,
         rule_id=rule_three['ruleId']
     )
+
+
+def add_rule_to_task_db(account_id, task, rule):
+    saved_rule = rule_service.create_new_rule(rule)
+    TaskToRuleModel.objects.create(
+        account_id=account_id,
+        task_id=task.id,
+        rule_id=saved_rule['ruleId']
+    )

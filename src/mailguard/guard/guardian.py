@@ -21,6 +21,7 @@ class Guardian:
             messages = self.mail_control.read_messages()
             for key, message in messages.items():
                 mail = mailparser.parse_from_bytes(message)
+                mail.num = key
                 self.rule_interpreter.interpret(mail)
         except MailControlException:
             self.task.state = "ERROR"

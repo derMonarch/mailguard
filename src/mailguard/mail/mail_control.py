@@ -1,6 +1,6 @@
 from mailguard.mail.errors import err
 
-from mailguard.mail.commands import MailBoxCloseConn, MailBoxConnect, ReadMessages
+from mailguard.mail.commands import MailBoxCloseConn, MailBoxConnect, ReadMessages, DeleteMessage
 from mailguard.mail.mail_account import MailAccount
 
 
@@ -10,6 +10,7 @@ class MailControl:
         account_id,
         connect_command=MailBoxConnect,
         read_messages_command=ReadMessages,
+        delete_message_command=DeleteMessage,
         close_conn_command=MailBoxCloseConn,
     ):
         self.account_id = account_id
@@ -17,6 +18,7 @@ class MailControl:
         self.mailbox_conn = None
         self.connect_command = connect_command
         self.read_messages_command = read_messages_command
+        self.delete_message_command = delete_message_command
         self.close_conn_command = close_conn_command
 
     def init_control(self, *args, **kwargs):
@@ -40,8 +42,8 @@ class MailControl:
 
     def delete_message(self, *args, **kwargs):
         self._check_connection()
-        mail = kwargs['mail']
-        print('yeeelo')
+        deleter = self.delete_message_command(self.mailbox_conn)
+        deleter.execute(*args, **kwargs)
 
     def move_message(self, *args, **kwargs):
         pass
