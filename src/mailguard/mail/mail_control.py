@@ -1,6 +1,6 @@
 from mailguard.mail.errors import err
 
-from mailguard.mail.commands import MailBoxCloseConn, MailBoxConnect, ReadMessages, DeleteMessage
+from mailguard.mail import commands
 from mailguard.mail.mail_account import MailAccount
 
 
@@ -8,10 +8,11 @@ class MailControl:
     def __init__(
         self,
         account_id,
-        connect_command=MailBoxConnect,
-        read_messages_command=ReadMessages,
-        delete_message_command=DeleteMessage,
-        close_conn_command=MailBoxCloseConn,
+        connect_command=commands.MailBoxConnect,
+        read_messages_command=commands.ReadMessages,
+        delete_message_command=commands.DeleteMessage,
+        move_message_command=commands.MoveMessage,
+        close_conn_command=commands.MailBoxCloseConn,
     ):
         self.account_id = account_id
         self.account = None
@@ -19,6 +20,7 @@ class MailControl:
         self.connect_command = connect_command
         self.read_messages_command = read_messages_command
         self.delete_message_command = delete_message_command
+        self.move_message_command = move_message_command
         self.close_conn_command = close_conn_command
 
     def init_control(self, *args, **kwargs):
@@ -46,10 +48,18 @@ class MailControl:
         deleter.execute(*args, **kwargs)
 
     def move_message(self, *args, **kwargs):
+        self._check_connection()
+        mover = self.move_message_command(self.mailbox_conn)
+        deleter = self.delete_message_command(self.mailbox_conn)
+
+        mover.execute(*args, **kwargs)
+        deleter.execute(*args, **kwargs)
+
+    def copy_message(self, *args, **kwargs):
         pass
 
     def forward_message(self, *args, **kwargs):
-        pass
+        """TODO: smtp"""
 
     def encrypt_message(self, *args, **kwargs):
         pass

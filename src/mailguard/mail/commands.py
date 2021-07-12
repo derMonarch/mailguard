@@ -71,8 +71,22 @@ class DeleteMessage(MailCommand):
         self.mailbox_conn = mailbox_conn
 
     def execute(self, *args, **kwargs):
+        """TODO: error handling -> negative tests"""
         self.mailbox_conn.store(kwargs['mail'].num, "+FLAGS", "\\Deleted")
         self.mailbox_conn.expunge()
+
+    def get_data(self):
+        pass
+
+
+class MoveMessage(MailCommand):
+
+    def __init__(self, mailbox_conn):
+        self.mailbox_conn = mailbox_conn
+
+    def execute(self, *args, **kwargs):
+        """TODO: error handling -> negative tests"""
+        self.mailbox_conn.copy(kwargs['mail'].num, kwargs['dest'])
 
     def get_data(self):
         pass

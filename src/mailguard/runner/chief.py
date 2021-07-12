@@ -22,7 +22,6 @@ class Runner:
     def add_scheduler_job(self, guardian, seconds):
         self._guardians.append(guardian)
         # TODO: may need to init connection once and then run scheduled guard on mailbox
-        # TODO: may use redis to schedule tasks in queue
         # TODO: what happens when second task (1 sec) is started besides old task sill running?
         self.scheduler.add_job(guardian.guard_mailbox, "interval", seconds=seconds)
 
@@ -32,6 +31,8 @@ class MainRunner(Runner):
         super().__init__(task_service)
 
     # TODO: besides run also need shutdown
+    # TODO: logic to add and stop tasks on runtime
+    # TODO: where to start runner?
 
     def run(self):
         tasks = self.get_all_tasks()

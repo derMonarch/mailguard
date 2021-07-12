@@ -1,6 +1,6 @@
 class RuleInterpreter:
     """
-    TODO: tags filter and encryption not yet implemented
+    TODO: tags and encryption not yet implemented
     """
 
     def __init__(self, mail_control, task, filter_check):
@@ -26,7 +26,8 @@ class RuleInterpreter:
             elif key in 'copy':
                 pass
             elif key in 'moveTo':
-                pass
+                for move_to in actions[key]:
+                    self.mail_control.move_message(mail=mail, dest=move_to)
             elif key in 'forward':
                 pass
             elif key in 'encryption':

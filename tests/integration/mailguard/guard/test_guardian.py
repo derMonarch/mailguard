@@ -12,6 +12,7 @@ from tests.helper import rules
 
 
 class GuardianTest(TestCase):
+    """TODO: need to setup mails in mailaccount before tests (automated)"""
     config = configparser.ConfigParser()
     config.read('tests/resources/account.ini')
 
@@ -25,6 +26,8 @@ class GuardianTest(TestCase):
     smtp = "mail.gmx.net"
     imap_port = 993
     smtp_port = 587
+
+    task = None
 
     def setUp(self):
         AccountModel.objects.create(account_id=self.account_id,
@@ -44,6 +47,11 @@ class GuardianTest(TestCase):
                                     smtp=self.smtp,
                                     imap_port=self.imap_port,
                                     smtp_port=self.smtp_port)
+
+        self.task = TaskModel.objects.create(account_id=self.account_id,
+                                             time_interval=5,
+                                             priority=5,
+                                             active=0)
 
     def test_guard_mailbox(self):
         task = TaskModel.objects.create(account_id=self.account_id,
@@ -72,16 +80,35 @@ class GuardianTest(TestCase):
                          }
                      }}
 
-        task = TaskModel.objects.create(account_id=self.account_id,
-                                        time_interval=5,
-                                        priority=5,
-                                        active=0)
+        rules.add_rules_to_task_db(self.account_id, self.task)
+        rules.add_rule_to_task_db(self.account_id, self.task, test_rule)
+        task_rule.add_rules_to_task(self.task)
 
-        rules.add_rules_to_task_db(self.account_id, task)
-        rules.add_rule_to_task_db(self.account_id, task, test_rule)
-        task_rule.add_rules_to_task(task)
+        self._guard_mailbox(self.task)
 
-        self._guard_mailbox(task)
+    def test_guard_mailbox_move_message(self):
+        test_rule = {'ruleId': '1234',
+                     'accountId': self.account_id,
+                     'priority': 2,
+                     'rule': {
+                         'filters': {
+                             'fromAddress': [
+                                 'spam@yahoo.de',
+                                 'martin.weygandt@gmx.de'
+                             ]
+                         },
+                         'actions': {
+                             'moveTo': [
+                                 'Firma'
+                             ]
+                         }
+                     }}
+
+        rules.add_rules_to_task_db(self.account_id, self.task)
+        rules.add_rule_to_task_db(self.account_id, self.task, test_rule)
+        task_rule.add_rules_to_task(self.task)
+
+        self._guard_mailbox(self.task)
 
     def test_guard_mailbox_negative(self):
         task = TaskModel.objects.create(account_id=self.account_id_two,
