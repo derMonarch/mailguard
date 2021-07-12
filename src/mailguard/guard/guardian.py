@@ -17,16 +17,17 @@ class Guardian:
         raise an exception
         """
         try:
-            # TODO: need to act chunk wise, not per email
+            # TODO: task restart mechanism at runtime
             # TODO: move into action/filter chunks and execute only once on all mails in chunk
             self.mail_control.init_control()
-            messages = self.mail_control.read_messages()
+            messages = self.mail_control.read_messages(range=self.task.range)
             for key, message in messages.items():
                 mail = mailparser.parse_from_bytes(message)
                 mail.num = key
                 self.rule_interpreter.interpret(mail)
-        except MailControlException:
+        except MailControlException as ex:
             self.task.state = "ERROR"
+            self.task.message = ex.message
             self.task.save()
 
             if self.mail_control.mailbox_conn is not None:

@@ -51,9 +51,11 @@ class MailControl:
         self._check_connection()
         mover = self.move_message_command(self.mailbox_conn)
         deleter = self.delete_message_command(self.mailbox_conn)
-
-        mover.execute(*args, **kwargs)
-        deleter.execute(*args, **kwargs)
+        try:
+            mover.execute(*args, **kwargs)
+            deleter.execute(*args, **kwargs)
+        except err.MailMoveException as ex:
+            raise err.MailControlException(message=ex.message)
 
     def copy_message(self, *args, **kwargs):
         pass

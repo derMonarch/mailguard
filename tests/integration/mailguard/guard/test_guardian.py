@@ -110,6 +110,34 @@ class GuardianTest(TestCase):
 
         self._guard_mailbox(self.task)
 
+    def test_guard_mailbox_move_message_negative(self):
+        test_rule = {'ruleId': '1234',
+                     'accountId': self.account_id,
+                     'priority': 2,
+                     'rule': {
+                         'filters': {
+                             'fromAddress': [
+                                 'spam@yahoo.de',
+                                 'martin.weygandt@gmx.de'
+                             ]
+                         },
+                         'actions': {
+                             'moveTo': [
+                                 'Nothing'
+                             ]
+                         }
+                     }}
+
+        rules.add_rules_to_task_db(self.account_id, self.task)
+        rules.add_rule_to_task_db(self.account_id, self.task, test_rule)
+        task_rule.add_rules_to_task(self.task)
+
+        self._guard_mailbox(self.task)
+
+        updated_task = TaskModel.objects.get(account_id=self.account_id)
+        assert updated_task.state in "ERROR"
+        assert updated_task.message in 'unable to move mail into folder: Nothing'
+
     def test_guard_mailbox_negative(self):
         task = TaskModel.objects.create(account_id=self.account_id_two,
                                         time_interval=5,

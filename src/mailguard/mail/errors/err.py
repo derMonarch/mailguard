@@ -20,3 +20,9 @@ class MailBoxConnectionStateException(Exception):
     def __init__(self, message="MailBox connection should be in state SELECTED"):
         super().__init__(message)
         self.message = message
+
+
+class MailMoveException(Exception):
+    def __init__(self, message="could not move mail into folder"):
+        super().__init__(message)
+        self.message = message
