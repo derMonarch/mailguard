@@ -52,13 +52,13 @@ class MailControl:
         mover = self.move_message_command(self.mailbox_conn)
         deleter = self.delete_message_command(self.mailbox_conn)
         try:
-            mover.execute(*args, **kwargs)
-            deleter.execute(*args, **kwargs)
+            if 'copy' in kwargs and kwargs['copy'] is True:
+                mover.execute(*args, **kwargs)
+            else:
+                mover.execute(*args, **kwargs)
+                deleter.execute(*args, **kwargs)
         except err.MailMoveException as ex:
             raise err.MailControlException(message=ex.message)
-
-    def copy_message(self, *args, **kwargs):
-        pass
 
     def forward_message(self, *args, **kwargs):
         """TODO: smtp"""

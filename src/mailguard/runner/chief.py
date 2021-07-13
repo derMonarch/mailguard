@@ -30,8 +30,8 @@ class MainRunner(Runner):
     def __init__(self, task_service):
         super().__init__(task_service)
 
-    # TODO: besides run also need shutdown
-    # TODO: logic to add and stop tasks on runtime
+    # TODO: besides run also need stop
+    # TODO: logic to add, stop and restart tasks on runtime
     # TODO: where to start runner?
 
     def run(self):

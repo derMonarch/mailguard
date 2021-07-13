@@ -87,6 +87,7 @@ class GuardianTest(TestCase):
         self._guard_mailbox(self.task)
 
     def test_guard_mailbox_move_message(self):
+        """TODO: test for move message with copy and without delete"""
         test_rule = {'ruleId': '1234',
                      'accountId': self.account_id,
                      'priority': 2,
@@ -101,6 +102,28 @@ class GuardianTest(TestCase):
                              'moveTo': [
                                  'Firma'
                              ]
+                         }
+                     }}
+
+        rules.add_rules_to_task_db(self.account_id, self.task)
+        rules.add_rule_to_task_db(self.account_id, self.task, test_rule)
+        task_rule.add_rules_to_task(self.task)
+
+        self._guard_mailbox(self.task)
+
+    def test_guard_mailbox_copy_message(self):
+        test_rule = {'ruleId': '1234',
+                     'accountId': self.account_id,
+                     'priority': 2,
+                     'rule': {
+                         'filters': {
+                             'fromAddress': [
+                                 'spam@yahoo.de',
+                                 'martin.weygandt@gmx.de'
+                             ]
+                         },
+                         'actions': {
+                             'copy': True
                          }
                      }}
 

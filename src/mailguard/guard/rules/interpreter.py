@@ -23,11 +23,14 @@ class RuleInterpreter:
         for key in actions.keys():
             if key in 'delete':
                 self.mail_control.delete_message(mail=mail)
-            elif key in 'copy':
-                pass
             elif key in 'moveTo':
                 for move_to in actions[key]:
-                    self.mail_control.move_message(mail=mail, dest=move_to)
+                    if 'copy' in actions and actions['copy'] is True:
+                        self.mail_control.move_message(mail=mail, dest=move_to, copy=True)
+                    else:
+                        self.mail_control.move_message(mail=mail, dest=move_to)
+            elif key in 'copy':
+                self.mail_control.move_message(mail=mail, dest='inbox', copy=True)
             elif key in 'forward':
                 pass
             elif key in 'encryption':

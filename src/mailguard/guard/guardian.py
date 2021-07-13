@@ -17,8 +17,8 @@ class Guardian:
         raise an exception
         """
         try:
-            # TODO: task restart mechanism at runtime
             # TODO: move into action/filter chunks and execute only once on all mails in chunk
+            # TODO: put chunks into redis queue and process async
             self.mail_control.init_control()
             messages = self.mail_control.read_messages(range=self.task.range)
             for key, message in messages.items():
