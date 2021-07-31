@@ -41,7 +41,6 @@ def run_dead_code_check():
 
 
 def main():
-    # TODO: add output checks to raise error when e.g. static checks has warnings
     run_formatter()
     run_static_check()
     run_import_sort()

@@ -1,6 +1,5 @@
-from mailguard.mail.errors import err
-
 from mailguard.mail import commands
+from mailguard.mail.errors import err
 from mailguard.mail.mail_account import MailAccount
 
 
@@ -52,7 +51,7 @@ class MailControl:
         mover = self.move_message_command(self.mailbox_conn)
         deleter = self.delete_message_command(self.mailbox_conn)
         try:
-            if 'copy' in kwargs and kwargs['copy'] is True:
+            if "copy" in kwargs and kwargs["copy"] is True:
                 mover.execute(*args, **kwargs)
             else:
                 mover.execute(*args, **kwargs)

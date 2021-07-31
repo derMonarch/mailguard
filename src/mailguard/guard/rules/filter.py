@@ -2,17 +2,17 @@ from enum import Enum
 
 
 class FilterType(str, Enum):
-    from_address = 'fromAddress'
-    words = 'words'
-    links = 'links'
-    tags = 'tags'
+    from_address = "fromAddress"
+    words = "words"
+    links = "links"
+    tags = "tags"
 
 
 def from_address_check(filter_value, mail):
-    """TODO: switch to regex?"""
-    from_address = mail.headers['From']
-    start_address = from_address.find('<') + 1
-    end_address = from_address.find('>')
+    """TODO: switch to regex"""
+    from_address = mail.headers["From"]
+    start_address = from_address.find("<") + 1
+    end_address = from_address.find(">")
 
     address = from_address[start_address:end_address]
 

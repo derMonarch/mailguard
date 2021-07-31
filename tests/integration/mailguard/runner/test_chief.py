@@ -1,10 +1,12 @@
 import configparser
+import time
 
 from django.test import TestCase
 from mailguard.registration.models.account_model import AccountModel
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.runner.chief import MainRunner
 from mailguard.tasks.services import tasks
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from tests.helper import rules
 
@@ -24,9 +26,7 @@ class MainRunnerTest(TestCase):
     imap_port = 993
     smtp_port = 587
 
-    # TODO: tests need to check if rules have been added to task, and task is in right state
-
-    def setUp(self):
+    def test_run(self):
         AccountModel.objects.create(account_id=self.account_id,
                                     mail_address=self.mail_address,
                                     password=self.password,
@@ -42,13 +42,37 @@ class MainRunnerTest(TestCase):
 
         rules.add_rules_to_task_db(self.account_id, created_task)
 
-    def test_run(self):
         runner = MainRunner(tasks)
         runner.run()
 
         updated_task = TaskModel.objects.get(account_id=self.account_id)
         assert updated_task.active == 1
         assert updated_task.state in "OK"
+
+    def test_run_no_rules_found_for_task(self):
+        AccountModel.objects.create(account_id=self.account_id_two,
+                                    mail_address=self.mail_address,
+                                    password=self.password,
+                                    provider=self.provider,
+                                    imap=self.imap,
+                                    smtp=self.smtp,
+                                    imap_port=self.imap_port,
+                                    smtp_port=self.smtp_port)
+
+        TaskModel.objects.create(account_id=self.account_id_two,
+                                 time_interval=5,
+                                 priority=5)
+
+        runner = MainRunner(tasks, BackgroundScheduler())
+        runner.run()
+        time.sleep(8)
+        print('WOOOOW')
+
+    def test_run_stop_error_jobs(self):
+        pass
+
+    def test_run_add_job_on_runtime(self):
+        """TODO: wont work with sqlite cause of concurrency"""
 
     def tearDown(self):
         AccountModel.objects.all().delete()

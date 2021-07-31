@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tasks', '0005_taskmodel_message'),
+        ("tasks", "0005_taskmodel_message"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='taskmodel',
-            name='range',
-            field=models.CharField(default='(UNSEEN)', max_length=50),
+            model_name="taskmodel",
+            name="range",
+            field=models.CharField(default="(UNSEEN)", max_length=50),
         ),
     ]

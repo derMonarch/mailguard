@@ -87,10 +87,7 @@ DATABASES = {
             "db": "mailguard",
             "user": "root",
             "password": "example",
-        },
-        "TEST": {
-            # this gets you in-memory sqlite for tests, which is fast
-            "ENGINE": "django.db.backends.sqlite3",
+            "CONN_MAX_AGE": "60",
         },
     }
 }

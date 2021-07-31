@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tasks', '0004_taskmodel_range'),
+        ("tasks", "0004_taskmodel_range"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='taskmodel',
-            name='message',
-            field=models.CharField(default='N/A', max_length=500),
+            model_name="taskmodel",
+            name="message",
+            field=models.CharField(default="N/A", max_length=500),
         ),
     ]

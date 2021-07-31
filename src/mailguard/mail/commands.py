@@ -49,9 +49,9 @@ class ReadMessages(MailCommand):
         self.messages.clear()
         if self._check_connection_state():
             # TODO: what can I search?
-            typ, data = self.mailbox_conn.search(None, kwargs['range'])
+            typ, data = self.mailbox_conn.search(None, kwargs["range"])
             for num in data[0].split():
-                typ, data = self.mailbox_conn.fetch(num, '(RFC822)')
+                typ, data = self.mailbox_conn.fetch(num, "(RFC822)")
                 if typ in "OK":
                     self.messages[num] = data[0][1]
         else:
@@ -66,12 +66,11 @@ class ReadMessages(MailCommand):
 
 
 class DeleteMessage(MailCommand):
-
     def __init__(self, mailbox_conn):
         self.mailbox_conn = mailbox_conn
 
     def execute(self, *args, **kwargs):
-        self.mailbox_conn.store(kwargs['mail'].num, "+FLAGS", "\\Deleted")
+        self.mailbox_conn.store(kwargs["mail"].num, "+FLAGS", "\\Deleted")
         self.mailbox_conn.expunge()
 
     def get_data(self):
@@ -79,15 +78,14 @@ class DeleteMessage(MailCommand):
 
 
 class MoveMessage(MailCommand):
-
     def __init__(self, mailbox_conn):
         self.mailbox_conn = mailbox_conn
 
     def execute(self, *args, **kwargs):
-        dest = kwargs['dest']
-        result = self.mailbox_conn.copy(kwargs['mail'].num, dest)
-        if 'NO' in result:
-            raise err.MailMoveException(message=f'unable to move mail into folder: {dest}')
+        dest = kwargs["dest"]
+        result = self.mailbox_conn.copy(kwargs["mail"].num, dest)
+        if "NO" in result:
+            raise err.MailMoveException(message=f"unable to move mail into folder: {dest}")
 
     def get_data(self):
         pass

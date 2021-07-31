@@ -1,6 +1,5 @@
+from mailguard.mail.errors.err import CouldNotGetAccountException
 from mailguard.registration import controller as reg_controller
-
-from .errors.err import CouldNotGetAccountException
 
 
 class MailAccount:
