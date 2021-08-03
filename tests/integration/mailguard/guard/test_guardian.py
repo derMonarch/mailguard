@@ -12,7 +12,10 @@ from tests.helper import rules
 
 
 class GuardianTest(TestCase):
-    """TODO: need to setup mails in mailaccount before tests (automated)"""
+    """
+    TODO: need to setup mails in mailaccount before tests (automated)
+    TODO: need correct assertions
+    """
     config = configparser.ConfigParser()
     config.read('tests/resources/account.ini')
 

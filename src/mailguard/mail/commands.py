@@ -48,7 +48,6 @@ class ReadMessages(MailCommand):
     def execute(self, *args, **kwargs):
         self.messages.clear()
         if self._check_connection_state():
-            # TODO: what can I search?
             typ, data = self.mailbox_conn.search(None, kwargs["range"])
             for num in data[0].split():
                 typ, data = self.mailbox_conn.fetch(num, "(RFC822)")
@@ -61,8 +60,7 @@ class ReadMessages(MailCommand):
         return self.messages
 
     def _check_connection_state(self):
-        if self.mailbox_conn.state in "SELECTED":
-            return True
+        return self.mailbox_conn.state in "SELECTED"
 
 
 class DeleteMessage(MailCommand):

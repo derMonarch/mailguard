@@ -24,8 +24,10 @@ class Runner:
         self.task_service.remove_task(task_id)
 
     def add_scheduler_job(self, guardian, seconds):
-        # TODO: may need to init connection once and then run scheduled guard on mailbox
-        # TODO: what happens when second task (1 sec) is started besides old task sill running?
+        """
+        TODO: may need to init connection once and then run scheduled guard on mailbox
+        TODO: what happens when same task is started again besides old task sill running?
+        """
         self._jobs[str(guardian.task.id)] = self.scheduler.add_job(
             guardian.guard_mailbox, "interval", seconds=seconds
         )
@@ -49,7 +51,7 @@ class MainRunner(Runner):
                 self.add_manager_job(job=self.check_on_runtime, seconds=30)
 
     def stop(self):
-        pass
+        self.scheduler.shutdown()
 
     def check_on_runtime(self):
         inactive_tasks = self.task_service.get_inactive_tasks()

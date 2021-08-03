@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -27,6 +28,27 @@ SECRET_KEY = "django-insecure-$nbqr1e$8_s=fh@#i^5ph8n_ltak%(rlr2@=8w3pkzj-j^31rh
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
+}
 
 # Application definition
 
@@ -87,7 +109,6 @@ DATABASES = {
             "db": "mailguard",
             "user": "root",
             "password": "example",
-            "CONN_MAX_AGE": "60",
         },
     }
 }

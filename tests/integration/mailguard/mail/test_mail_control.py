@@ -7,6 +7,7 @@ import configparser
 
 
 class MailControlTest(TestCase):
+    """TODO: tests need refactoring"""
     config = configparser.ConfigParser()
     config.read('tests/resources/account.ini')
 

@@ -1,17 +1,16 @@
 import configparser
 import time
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 from mailguard.registration.models.account_model import AccountModel
 from mailguard.tasks.models.task_model import TaskModel
 from mailguard.runner.chief import MainRunner
 from mailguard.tasks.services import tasks
-from apscheduler.schedulers.background import BackgroundScheduler
 
 from tests.helper import rules
 
 
-class MainRunnerTest(TestCase):
+class MainRunnerTest(TransactionTestCase):
     config = configparser.ConfigParser()
     config.read('tests/resources/account.ini')
 
@@ -26,6 +25,8 @@ class MainRunnerTest(TestCase):
     imap_port = 993
     smtp_port = 587
 
+    runner = MainRunner(tasks)
+
     def test_run(self):
         AccountModel.objects.create(account_id=self.account_id,
                                     mail_address=self.mail_address,
@@ -37,13 +38,14 @@ class MainRunnerTest(TestCase):
                                     smtp_port=self.smtp_port)
 
         created_task = TaskModel.objects.create(account_id=self.account_id,
-                                                time_interval=5,
-                                                priority=5)
+                                                time_interval=3,
+                                                priority=5,
+                                                range='ALL')
 
         rules.add_rules_to_task_db(self.account_id, created_task)
 
-        runner = MainRunner(tasks)
-        runner.run()
+        self.runner.run()
+        time.sleep(5)
 
         updated_task = TaskModel.objects.get(account_id=self.account_id)
         assert updated_task.active == 1
@@ -60,19 +62,22 @@ class MainRunnerTest(TestCase):
                                     smtp_port=self.smtp_port)
 
         TaskModel.objects.create(account_id=self.account_id_two,
-                                 time_interval=5,
-                                 priority=5)
+                                 time_interval=3,
+                                 priority=5,
+                                 range='ALL')
 
-        runner = MainRunner(tasks, BackgroundScheduler())
-        runner.run()
-        time.sleep(8)
-        print('WOOOOW')
+        self.runner.run()
+        time.sleep(5)
+        updated_task = TaskModel.objects.get(account_id=self.account_id_two)
+
+        assert updated_task.state in 'ERROR'
+        assert updated_task.message in 'at least one rule needs to be defined for task'
 
     def test_run_stop_error_jobs(self):
         pass
 
     def test_run_add_job_on_runtime(self):
-        """TODO: wont work with sqlite cause of concurrency"""
+        pass
 
     def tearDown(self):
         AccountModel.objects.all().delete()

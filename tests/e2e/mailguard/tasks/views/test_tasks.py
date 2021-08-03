@@ -15,7 +15,7 @@ class TasksViewTest(APITestCase):
         assert response_data['priority'] == 5
         assert response_data['active'] is False
         assert response_data['state'] in 'OK'
-        assert response_data['range'] in 'NEW'
+        assert response_data['range'] in '(UNSEEN)'
 
     @staticmethod
     def _new_task():
