@@ -27,6 +27,9 @@ class MainRunnerTest(TransactionTestCase):
 
     runner = MainRunner(tasks)
 
+    def setUp(self) -> None:
+        self.runner.scheduler.remove_all_jobs()
+
     def test_run(self):
         AccountModel.objects.create(account_id=self.account_id,
                                     mail_address=self.mail_address,
@@ -39,7 +42,7 @@ class MainRunnerTest(TransactionTestCase):
 
         created_task = TaskModel.objects.create(account_id=self.account_id,
                                                 time_interval=3,
-                                                priority=5,
+                                                priority=4,
                                                 range='ALL')
 
         rules.add_rules_to_task_db(self.account_id, created_task)
@@ -53,6 +56,29 @@ class MainRunnerTest(TransactionTestCase):
         assert updated_task.state in "OK"
 
     def test_run_no_rules_found_for_task(self):
+        self._prepare_error_job_no_rules()
+
+        time.sleep(5)
+        updated_task = TaskModel.objects.get(account_id=self.account_id_two)
+
+        assert updated_task.state in 'ERROR'
+        assert updated_task.message in 'at least one rule needs to be defined for task'
+
+    def test_run_stop_error_jobs(self):
+        self._prepare_error_job_no_rules(priority=4)
+
+        time.sleep(6)
+
+        updated_task = TaskModel.objects.get(account_id=self.account_id_two)
+        assert updated_task.state in 'ERROR'
+        assert updated_task.message in 'at least one rule needs to be defined for task'
+
+        assert str(updated_task.id) not in self.runner._jobs.keys()
+
+    def test_run_add_job_on_runtime(self):
+        pass
+
+    def _prepare_error_job_no_rules(self, priority=5):
         AccountModel.objects.create(account_id=self.account_id_two,
                                     mail_address=self.mail_address,
                                     password=self.password,
@@ -64,22 +90,10 @@ class MainRunnerTest(TransactionTestCase):
 
         TaskModel.objects.create(account_id=self.account_id_two,
                                  time_interval=3,
-                                 priority=5,
+                                 priority=priority,
                                  range='ALL')
 
-        self.runner.run()
-
-        time.sleep(5)
-        updated_task = TaskModel.objects.get(account_id=self.account_id_two)
-
-        assert updated_task.state in 'ERROR'
-        assert updated_task.message in 'at least one rule needs to be defined for task'
-
-    def test_run_stop_error_jobs(self):
-        pass
-
-    def test_run_add_job_on_runtime(self):
-        pass
+        self.runner.run(manager_job_interval=2)
 
     def tearDown(self):
         AccountModel.objects.all().delete()

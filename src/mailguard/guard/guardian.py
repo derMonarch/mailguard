@@ -29,7 +29,7 @@ class Guardian:
                 mail.num = key
                 self.rule_interpreter.interpret(mail)
         except (MailControlException, NoRulesForTaskException, NoValidActionFoundException) as ex:
-            self.task.state = "ERROR"
+            self.task.state = 'ERROR'
             self.task.message = ex.message
             self.task.save()
 

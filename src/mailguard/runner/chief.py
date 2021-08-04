@@ -38,6 +38,10 @@ class Runner:
 
     def remove_scheduled_job(self, task):
         self.scheduler.remove_job(self._jobs[str(task.id)].id)
+        del self._jobs[str(task.id)]
+
+    def clear_job_overview(self):
+        self._jobs.clear()
 
 
 class MainRunner(Runner):
@@ -45,12 +49,16 @@ class MainRunner(Runner):
         super().__init__(task_service, scheduler)
         self.guardians = []
 
-    def run(self):
+    def run(self, manager_job_interval=30):
+        self.clear_job_overview()
+        self.guardians.clear()
+
         tasks = self.get_all_tasks()
         for task in tasks:
             if task.active == 0:
                 self._start_task(task)
-                self.add_manager_job(job=self.check_on_runtime, seconds=30)
+
+        self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
 
     def stop(self):
         # noinspection PyBroadException
@@ -69,7 +77,10 @@ class MainRunner(Runner):
 
         error_tasks = self.task_service.get_state_error_tasks()
         for error_task in error_tasks:
-            self.remove_scheduled_job(error_task)
+            if error_task.active == 1:
+                self.remove_scheduled_job(error_task)
+                error_task.active = 0
+                error_task.save()
 
     def _start_task(self, task):
         logger.info("runner.task.start", extra={"task_id": task.id})

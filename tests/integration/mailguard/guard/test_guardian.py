@@ -14,6 +14,7 @@ from tests.helper import rules
 class GuardianTest(TestCase):
     """
     TODO: need to setup mails in mailaccount before tests (automated)
+    TODO: or need mocked imap server
     TODO: need correct assertions
     """
     config = configparser.ConfigParser()
