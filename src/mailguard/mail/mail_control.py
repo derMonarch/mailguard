@@ -43,8 +43,7 @@ class MailControl:
 
     def delete_message(self, *args, **kwargs):
         self._check_connection()
-        deleter = self.delete_message_command(self.mailbox_conn)
-        deleter.execute(*args, **kwargs)
+        self.delete_message_command(self.mailbox_conn).execute(*args, **kwargs)
 
     def move_message(self, *args, **kwargs):
         self._check_connection()
@@ -66,8 +65,7 @@ class MailControl:
         pass
 
     def close_mailbox(self, *args, **kwargs):
-        closer = self.close_conn_command(self.mailbox_conn)
-        closer.execute(*args, **kwargs)
+        self.close_conn_command(self.mailbox_conn).execute(*args, **kwargs)
 
     def _check_connection(self):
         if self.mailbox_conn is None:

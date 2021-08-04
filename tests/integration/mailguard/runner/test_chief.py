@@ -45,9 +45,10 @@ class MainRunnerTest(TransactionTestCase):
         rules.add_rules_to_task_db(self.account_id, created_task)
 
         self.runner.run()
-        time.sleep(5)
+        time.sleep(6)
 
         updated_task = TaskModel.objects.get(account_id=self.account_id)
+
         assert updated_task.active == 1
         assert updated_task.state in "OK"
 
@@ -67,6 +68,7 @@ class MainRunnerTest(TransactionTestCase):
                                  range='ALL')
 
         self.runner.run()
+
         time.sleep(5)
         updated_task = TaskModel.objects.get(account_id=self.account_id_two)
 

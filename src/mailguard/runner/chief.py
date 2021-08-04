@@ -1,4 +1,5 @@
 import logging
+import imaplib
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -42,6 +43,7 @@ class Runner:
 class MainRunner(Runner):
     def __init__(self, task_service, scheduler=BackgroundScheduler()):
         super().__init__(task_service, scheduler)
+        self.guardians = []
 
     def run(self):
         tasks = self.get_all_tasks()
@@ -51,6 +53,13 @@ class MainRunner(Runner):
                 self.add_manager_job(job=self.check_on_runtime, seconds=30)
 
     def stop(self):
+        # noinspection PyBroadException
+        try:
+            for guard in self.guardians:
+                guard.mail_control.close_mailbox()
+        except imaplib.IMAP4.error:
+            pass
+
         self.scheduler.shutdown()
 
     def check_on_runtime(self):
@@ -67,6 +76,7 @@ class MainRunner(Runner):
         mail_control = MailControl(task.account_id)
         task_rules.add_rules_to_task(task)
         guardian = Guardian(mail_control, task)
+        self.guardians.append(guardian)
         self.add_scheduler_job(guardian, task.time_interval)
 
         task.active = 1
