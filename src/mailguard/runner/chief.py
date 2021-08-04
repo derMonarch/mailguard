@@ -1,5 +1,5 @@
-import logging
 import imaplib
+import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -37,7 +37,7 @@ class Runner:
 
     @property
     def manager_active(self):
-        return 'manager' in self._jobs.keys()
+        return "manager" in self._jobs.keys()
 
     @property
     def jobs(self):

@@ -82,7 +82,7 @@ class MoveMessage(MailCommand):
     def execute(self, *args, **kwargs):
         dest = kwargs["dest"]
         result = self.mailbox_conn.copy(kwargs["mail"].num, dest)
-        if 'NO' in result:
+        if "NO" in result:
             raise err.MailMoveException(message=f"unable to move mail into folder: {dest}")
 
     def get_data(self):
