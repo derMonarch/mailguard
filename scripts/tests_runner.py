@@ -20,7 +20,7 @@ def generate_html():
 
 
 def main():
-    # TODO: checks for failing tests
+    # TODO: move config and runner into tox
     run_tests()
     generate_html()
 

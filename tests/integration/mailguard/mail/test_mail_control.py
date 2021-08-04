@@ -82,7 +82,7 @@ class MailControlTest(TestCase):
                               read_messages_command=commands.ReadMessages,
                               close_conn_command=commands.MailBoxCloseConn)
         control.init_control()
-        messages = control.read_messages()
+        messages = control.read_messages(range='ALL')
         assert messages
 
     def tearDown(self):
