@@ -16,14 +16,6 @@ class Runner:
         self.task_service = task_service
         self.scheduler = scheduler
 
-        self.scheduler.start()
-
-    def get_all_tasks(self):
-        return self.task_service.get_all()
-
-    def remove_task(self, task_id):
-        self.task_service.remove_task(task_id)
-
     def add_scheduler_job(self, guardian, seconds):
         """
         TODO: may need to init connection once and then run scheduled guard on mailbox
@@ -43,6 +35,14 @@ class Runner:
     def clear_job_overview(self):
         self._jobs.clear()
 
+    @property
+    def manager_active(self):
+        return 'manager' in self._jobs.keys()
+
+    @property
+    def jobs(self):
+        return self._jobs
+
 
 class MainRunner(Runner):
     def __init__(self, task_service, scheduler=BackgroundScheduler()):
@@ -53,12 +53,16 @@ class MainRunner(Runner):
         self.clear_job_overview()
         self.guardians.clear()
 
-        tasks = self.get_all_tasks()
-        for task in tasks:
-            if task.active == 0:
-                self._start_task(task)
+        if not self.scheduler.running:
+            self.scheduler.start()
+            self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
 
-        self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
+        if not self.manager_active:
+            self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
+
+        tasks = self.task_service.get_inactive_tasks()
+        for task in tasks:
+            self._start_task(task)
 
     def stop(self):
         # noinspection PyBroadException
@@ -67,6 +71,10 @@ class MainRunner(Runner):
                 guard.mail_control.close_mailbox()
         except imaplib.IMAP4.error:
             pass
+
+        for active_task in self.task_service.get_all_active_tasks():
+            active_task.active = 0
+            active_task.save()
 
         self.scheduler.shutdown()
 

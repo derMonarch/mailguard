@@ -5,6 +5,10 @@ def get_all():
     return TaskModel.objects.all()
 
 
+def get_all_active_tasks():
+    return TaskModel.objects.filter(active=1).all()
+
+
 def get_inactive_tasks():
     return TaskModel.objects.filter(active=0).all()
 

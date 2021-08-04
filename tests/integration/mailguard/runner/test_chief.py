@@ -76,7 +76,31 @@ class MainRunnerTest(TransactionTestCase):
         assert str(updated_task.id) not in self.runner._jobs.keys()
 
     def test_run_add_job_on_runtime(self):
-        pass
+        AccountModel.objects.create(account_id=self.account_id_two,
+                                    mail_address=self.mail_address,
+                                    password=self.password,
+                                    provider=self.provider,
+                                    imap=self.imap,
+                                    smtp=self.smtp,
+                                    imap_port=self.imap_port,
+                                    smtp_port=self.smtp_port)
+
+        self.runner.run(manager_job_interval=2)
+
+        assert len(self.runner.jobs) == 1
+
+        time.sleep(2)
+
+        created_task = TaskModel.objects.create(account_id=self.account_id,
+                                                time_interval=3,
+                                                priority=4,
+                                                range='ALL')
+
+        rules.add_rules_to_task_db(self.account_id, created_task)
+
+        time.sleep(2)
+
+        assert len(self.runner.jobs) == 2
 
     def _prepare_error_job_no_rules(self, priority=5):
         AccountModel.objects.create(account_id=self.account_id_two,
