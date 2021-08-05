@@ -1,13 +1,7 @@
 
 # What's Mailguard?
 
-Mailguard is a service which helps you to keep your mailbox clean. Besides that mailguard offers several other 
-features like mail encryption, sentiment analysis etc.
+Mailguard is a web service app which helps you to keep your mailbox clean. Tasks can be created which 
+contain rules regarding actions on mails.
 
 
-# Resources
-
-  - [Documentation](https://docs.mailguard.io/)
-  - [Contributing](https://docs.mailguard.io/contributing/)
-  - [Bug Tracker](https://github.com/cloudified-identity/mailguard/issues)
-  - [Code](https://github.com/cloudified-identity/mailguard)
