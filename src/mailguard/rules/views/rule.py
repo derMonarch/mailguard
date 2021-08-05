@@ -1,14 +1,16 @@
 import os
 
 from django.http import JsonResponse
+from mailguard.rules.models.serializers.task_to_rule_serializer import \
+    TaskToRuleSerializer
+from mailguard.rules.services import basic
+from mailguard.rules.validators.rule_schema import RuleSchemaValidator
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-from mailguard.rules.models.serializers.task_to_rule_serializer import TaskToRuleSerializer
-from mailguard.rules.services import basic
-from mailguard.rules.validators.rule_schema import RuleSchemaValidator
-
-rule_schema = os.path.abspath(__file__ + "/../../../../../config/schemas/rule-schema.json")
+rule_schema = os.path.abspath(
+    __file__ + "/../../../../../config/schemas/rule-schema.json"
+)
 rule_validator = RuleSchemaValidator(rule_schema)
 
 

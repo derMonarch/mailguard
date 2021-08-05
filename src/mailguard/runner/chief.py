@@ -2,7 +2,6 @@ import imaplib
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
-
 from mailguard.guard.guardian import Guardian
 from mailguard.mail.mail_control import MailControl
 from mailguard.rules.services import task as task_rules
@@ -51,10 +50,14 @@ class MainRunner(Runner):
 
         if not self.scheduler.running:
             self.scheduler.start()
-            self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
+            self.add_manager_job(
+                job=self.check_on_runtime, seconds=manager_job_interval
+            )
 
         if not self.manager_active:
-            self.add_manager_job(job=self.check_on_runtime, seconds=manager_job_interval)
+            self.add_manager_job(
+                job=self.check_on_runtime, seconds=manager_job_interval
+            )
 
         tasks = self.task_service.get_inactive_tasks()
         for task in tasks:

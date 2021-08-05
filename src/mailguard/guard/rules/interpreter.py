@@ -1,4 +1,5 @@
-from mailguard.guard.errors.err import NoRulesForTaskException, NoValidActionFoundException
+from mailguard.guard.errors.err import (NoRulesForTaskException,
+                                        NoValidActionFoundException)
 
 
 class RuleInterpreter:
@@ -31,7 +32,9 @@ class RuleInterpreter:
             elif key in "moveTo":
                 for move_to in actions[key]:
                     if "copy" in actions and actions["copy"] is True:
-                        self.mail_control.move_message(mail=mail, dest=move_to, copy=True)
+                        self.mail_control.move_message(
+                            mail=mail, dest=move_to, copy=True
+                        )
                     else:
                         self.mail_control.move_message(mail=mail, dest=move_to)
             elif key in "copy":

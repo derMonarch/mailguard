@@ -1,8 +1,7 @@
 from django.http import JsonResponse
+from mailguard.tasks.models.serializers.task_serializer import TaskSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
-
-from mailguard.tasks.models.serializers.task_serializer import TaskSerializer
 
 
 @api_view(["POST"])
