@@ -85,7 +85,7 @@ class MainRunnerTest(TransactionTestCase):
                                     imap_port=self.imap_port,
                                     smtp_port=self.smtp_port)
 
-        self.runner.run(manager_job_interval=2)
+        self.runner.run(manager_job_interval=3)
 
         assert len(self.runner.jobs) == 1
 
@@ -117,8 +117,12 @@ class MainRunnerTest(TransactionTestCase):
                                  priority=priority,
                                  range='ALL')
 
-        self.runner.run(manager_job_interval=2)
+        self.runner.run(manager_job_interval=3)
 
     def tearDown(self):
         AccountModel.objects.all().delete()
         TaskModel.objects.all().delete()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.runner.stop()

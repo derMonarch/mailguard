@@ -17,10 +17,6 @@ class Runner:
         self.scheduler = scheduler
 
     def add_scheduler_job(self, guardian, seconds):
-        """
-        TODO: may need to init connection once and then run scheduled guard on mailbox
-        TODO: what happens when same task is started again besides old task sill running?
-        """
         self._jobs[str(guardian.task.id)] = self.scheduler.add_job(
             guardian.guard_mailbox, "interval", seconds=seconds
         )
