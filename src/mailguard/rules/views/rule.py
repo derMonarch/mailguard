@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 
 rule_schema = os.path.abspath(
-    __file__ + "/../../../../../config/schemas/rule-schema.json"
+    __file__ + "/../../../data/rule-schema.json"
 )
 rule_validator = RuleSchemaValidator(rule_schema)
 
