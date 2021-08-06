@@ -64,8 +64,6 @@ INSTALLED_APPS = [
     "mailguard.configuration",
     "mailguard.tasks",
     "mailguard.rules",
-    "mailguard.metadata",
-    "mailguard.encryption",
     "mailguard.engine",
 ]
 

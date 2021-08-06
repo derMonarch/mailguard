@@ -8,9 +8,7 @@ from mailguard.rules.validators.rule_schema import RuleSchemaValidator
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-rule_schema = os.path.abspath(
-    __file__ + "/../../../data/rule-schema.json"
-)
+rule_schema = os.path.abspath(__file__ + "/../../../data/rule-schema.json")
 rule_validator = RuleSchemaValidator(rule_schema)
 
 
