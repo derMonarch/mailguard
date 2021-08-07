@@ -71,7 +71,7 @@ class DeleteMessage(MailCommand):
         self.mailbox_conn = mailbox_conn
 
     def execute(self, *args, **kwargs):
-        self.mailbox_conn.store(kwargs["mail"].num, "+FLAGS", "\\Deleted")
+        self.mailbox_conn.store(kwargs['mail_ids'], "+FLAGS", "\\Deleted")
         self.mailbox_conn.expunge()
 
     def get_data(self):
@@ -84,7 +84,7 @@ class MoveMessage(MailCommand):
 
     def execute(self, *args, **kwargs):
         dest = kwargs["dest"]
-        result = self.mailbox_conn.copy(kwargs["mail"].num, dest)
+        result = self.mailbox_conn.copy(kwargs['mail_ids'], dest)
         if "NO" in result:
             raise err.MailMoveException(
                 message=f"unable to move mail into folder: {dest}"

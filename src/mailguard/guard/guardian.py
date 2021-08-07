@@ -1,4 +1,3 @@
-import mailparser
 from mailguard.guard.errors.err import (NoRulesForTaskException,
                                         NoValidActionFoundException)
 from mailguard.guard.rules import interpreter
@@ -20,13 +19,12 @@ class Guardian:
         raise an exception
         """
         try:
-            # TODO: move into action/filter chunks and execute only once on all mails in chunk
             self.mail_control.init_control()
-            messages = self.mail_control.read_messages(range=self.task.range)
-            for key, message in messages.items():
-                mail = mailparser.parse_from_bytes(message)
-                mail.num = key
-                self.rule_interpreter.interpret(mail)
+            mails = self.mail_control.read_messages(range=self.task.range)
+            action_chunks = self.rule_interpreter.interpret(mails)
+
+            for action in action_chunks.values():
+                action()
         except (
             MailControlException,
             NoRulesForTaskException,

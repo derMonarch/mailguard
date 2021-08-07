@@ -1,11 +1,4 @@
-from enum import Enum
-
-
-class FilterType(str, Enum):
-    from_address = "fromAddress"
-    words = "words"
-    links = "links"
-    tags = "tags"
+from mailguard.guard.rules.constants import RuleFilterTypes
 
 
 def from_address_check(filter_value, mail):
@@ -24,7 +17,7 @@ class BaseFilterCheck:
         self.from_address = from_address
 
     def check_filter(self, key, filter_value, mail):
-        if key in FilterType.from_address.value:
+        if key in RuleFilterTypes.from_address.value:
             return self.from_address(filter_value, mail)
         else:
             return False

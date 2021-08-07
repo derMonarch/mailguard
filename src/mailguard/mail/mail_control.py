@@ -42,21 +42,27 @@ class MailControl:
             raise err.MailControlException(message=ex.message)
 
     def delete_message(self, *args, **kwargs):
-        self._check_connection()
-        self.delete_message_command(self.mailbox_conn).execute(*args, **kwargs)
+        def wrapper(mail_ids):
+            self._check_connection()
+            self.delete_message_command(self.mailbox_conn).execute(*args, mail_ids=mail_ids, **kwargs)
+
+        return wrapper
 
     def move_message(self, *args, **kwargs):
-        self._check_connection()
-        mover = self.move_message_command(self.mailbox_conn)
-        deleter = self.delete_message_command(self.mailbox_conn)
-        try:
-            if "copy" in kwargs and kwargs["copy"] is True:
-                mover.execute(*args, **kwargs)
-            else:
-                mover.execute(*args, **kwargs)
-                deleter.execute(*args, **kwargs)
-        except err.MailMoveException as ex:
-            raise err.MailControlException(message=ex.message)
+        def wrapper(mail_ids):
+            self._check_connection()
+            mover = self.move_message_command(self.mailbox_conn)
+            deleter = self.delete_message_command(self.mailbox_conn)
+            try:
+                if "copy" in kwargs and kwargs["copy"] is True:
+                    mover.execute(*args, mail_ids=mail_ids, **kwargs)
+                else:
+                    mover.execute(*args, mail_ids=mail_ids, **kwargs)
+                    deleter.execute(*args, mail_ids=mail_ids, **kwargs)
+            except err.MailMoveException as ex:
+                raise err.MailControlException(message=ex.message)
+
+        return wrapper
 
     def forward_message(self, *args, **kwargs):
         """TODO: smtp"""
