@@ -44,7 +44,9 @@ class MailControl:
     def delete_message(self, *args, **kwargs):
         def wrapper(mail_ids):
             self._check_connection()
-            self.delete_message_command(self.mailbox_conn).execute(*args, mail_ids=mail_ids, **kwargs)
+            self.delete_message_command(self.mailbox_conn).execute(
+                *args, mail_ids=mail_ids, **kwargs
+            )
 
         return wrapper
 

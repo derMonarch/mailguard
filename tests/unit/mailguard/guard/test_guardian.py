@@ -56,7 +56,8 @@ class GuardianTest(TestCase):
         self.task = TaskModel.objects.create(account_id=self.account_id,
                                              time_interval=5,
                                              priority=5,
-                                             active=0)
+                                             active=0,
+                                             range="ALL")
 
     def test_guard_mailbox(self):
         task = TaskModel.objects.create(account_id=self.account_id,

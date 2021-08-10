@@ -21,10 +21,7 @@ class Guardian:
         try:
             self.mail_control.init_control()
             mails = self.mail_control.read_messages(range=self.task.range)
-            action_chunks = self.rule_interpreter.interpret(mails)
-
-            for action in action_chunks.values():
-                action()
+            self.rule_interpreter.interpret(mails)
         except (
             MailControlException,
             NoRulesForTaskException,
