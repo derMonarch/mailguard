@@ -1,9 +1,9 @@
 import mailparser
 from mailguard.guard.errors.err import (NoRulesForTaskException,
                                         NoValidActionFoundException)
-from mailguard.guard.rules.constants import RuleActionTypes
-from mailguard.guard.rules.chunks import ChunksManager
 from mailguard.guard.rules import executor
+from mailguard.guard.rules.chunks import ChunksManager
+from mailguard.guard.rules.constants import RuleActionTypes
 
 
 class RuleInterpreter:

@@ -1,5 +1,4 @@
 def execute_from_chunks(chunks):
-    """TODO: still need to chunk mode into blocks of 200 mails per command"""
     if chunks.delete.action_fn is not None:
         for chunk in _chunk_mail_ids(chunks.delete.mails, 200):
             mails = _transform_mail_ids(chunk)
@@ -17,7 +16,7 @@ def execute_from_chunks(chunks):
 
 def _chunk_mail_ids(data, size):
     for i in range(0, len(data), size):
-        yield data[i:i + size]
+        yield data[i: i + size]
 
 
 def _transform_mail_ids(data):
