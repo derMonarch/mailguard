@@ -29,7 +29,8 @@ class MailControl:
             connect.execute(*args, **kwargs)
             self.mailbox_conn = connect.get_data()
 
-        except (err.CouldNotGetAccountException, err.MailBoxConnectionException) as ex:
+        except (err.CouldNotGetAccountException, err.MailBoxConnectionException, err.MailBoxConnectionStateException) \
+                as ex:
             raise err.MailControlException(message=ex.message)
 
     def read_messages(self, *args, **kwargs):

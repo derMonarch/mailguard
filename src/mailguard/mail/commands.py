@@ -26,13 +26,18 @@ class MailBoxConnect(MailCommand):
                 host=self.mail_account.imap, port=self.mail_account.imap_port
             )
             mailbox.login(self.mail_account.mail_address, self.mail_account.password)
-            if (
+            if kwargs:
+                mailbox.select(mailbox=kwargs["folder"], readonly=True)
+            elif (
                 self.mail_account.root_mailbox is None
                 or self.mail_account.root_mailbox in "N/A"
             ):
                 mailbox.select()
             else:
                 mailbox.select(mailbox=self.mail_account.root_mailbox)
+
+            if mailbox.state not in "SELECTED":
+                err.MailBoxConnectionStateException()
 
             self.connection = mailbox
 

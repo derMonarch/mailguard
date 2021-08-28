@@ -1,10 +1,12 @@
 import imaplib
 import logging
+import mailparser
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from mailguard.guard.guardian import Guardian
 from mailguard.mail.mail_control import MailControl
 from mailguard.rules.services import task as task_rules
+from mailguard.mail.errors import err
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +79,27 @@ class MainRunner(Runner):
 
         self.scheduler.shutdown()
 
+    @staticmethod
+    def add_rules_on_runtime(task):
+        """
+        TODO: update rules in database (check if there are any updates)
+              and set task to restart (if there are any updates, if not dont restart)
+        """
+        try:
+            mail_control = MailControl(task.account_id)
+            mail_control.init_control(folder="mailguard")
+
+            mails = mail_control.read_messages(range="ALL")
+            for mail in mails.values():
+                parsed_mail = mailparser.parse_from_bytes(mail)
+                if parsed_mail.mail["from"] and len(parsed_mail.mail["from"][0]) > 1:
+                    mail_address = parsed_mail.mail["from"][0][1]
+                print("YEELO")
+        except err.MailControlException as ex:
+            print(ex.message)
+
     def check_on_runtime(self):
+        """TODO: get state restart tasks, remove them from scheduler and add again"""
         inactive_tasks = self.task_service.get_inactive_tasks()
         for task in inactive_tasks:
             self._start_task(task)

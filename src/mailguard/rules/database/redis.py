@@ -4,6 +4,7 @@ import fakeredis
 import redis
 from django.conf import settings
 
+# TODO: possible exception when no env's / wrong connection data
 redis = (
     fakeredis.FakeStrictRedis()
     if settings.DEV is True

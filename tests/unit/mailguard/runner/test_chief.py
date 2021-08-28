@@ -102,6 +102,24 @@ class MainRunnerTest(TransactionTestCase):
 
         assert len(self.runner.jobs) == 2
 
+    def test_add_rules_on_runtime(self):
+        """TODO: implement"""
+        AccountModel.objects.create(account_id=self.account_id,
+                                    mail_address=self.mail_address,
+                                    password=self.password,
+                                    provider=self.provider,
+                                    imap=self.imap,
+                                    smtp=self.smtp,
+                                    imap_port=self.imap_port,
+                                    smtp_port=self.smtp_port)
+
+        created_task = TaskModel.objects.create(account_id=self.account_id,
+                                                time_interval=3,
+                                                priority=4,
+                                                range='ALL')
+
+        self.runner.add_rules_on_runtime(created_task)
+
     def _prepare_error_job_no_rules(self, priority=5):
         AccountModel.objects.create(account_id=self.account_id_two,
                                     mail_address=self.mail_address,

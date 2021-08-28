@@ -56,6 +56,23 @@ class MailControlTest(TestCase):
                                   close_conn_command=commands.MailBoxCloseConn)
             control.init_control()
 
+    def test_init_control_wrong_folder(self):
+        AccountModel.objects.create(account_id=self.account_id_two,
+                                    mail_address=self.wrong_mail_address,
+                                    password=self.password,
+                                    provider=self.provider,
+                                    imap=self.imap,
+                                    smtp=self.smtp,
+                                    imap_port=self.imap_port,
+                                    smtp_port=self.smtp_port)
+
+        with self.assertRaises(err.MailControlException):
+            control = MailControl(self.account_id_two,
+                                  connect_command=commands.MailBoxConnect,
+                                  read_messages_command=commands.ReadMessages,
+                                  close_conn_command=commands.MailBoxCloseConn)
+            control.init_control(folder="not_existent")
+
     def test_mailbox_connection_state(self):
         """when root_mailbox from AccountModel has a wrong value connection will not move into state SELECTED"""
         AccountModel.objects.create(account_id=self.account_id_two,
